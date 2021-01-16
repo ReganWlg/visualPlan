@@ -9,7 +9,8 @@ import javafx.scene.text.Text;
 
 public class RectangleField extends StackPane {
 
-    private VisualPlanNode _node;
+    // 记录当前结点
+    private VisualPlanNode _node = null;
 
     private final double RECTANGLE_WIDTH = 400;
     private final double RECTANGLE_HEIGHT = 180;
@@ -17,10 +18,6 @@ public class RectangleField extends StackPane {
     private final double RECTANGLE_ARC_HEIGHT = 20;
     private final double TEXT_WIDTH = 350;
     private final double TEXT_LAYOUTX = 25;
-
-    public RectangleField() {
-
-    }
 
     public RectangleField(VisualPlanNode node) {
 
@@ -39,7 +36,6 @@ public class RectangleField extends StackPane {
         text.setLayoutX(TEXT_LAYOUTX);
 
         this.getChildren().addAll(rectangle, text);
-
     }
 
     public VisualPlanNode getNode() {
