@@ -42,14 +42,7 @@ public abstract class VisualPlanNode {
     private void setLevelIndex(int levelIndex) {
         _levelIndex = levelIndex;
     }
-
-    public final void preOrderHandle(VisualPlanHandler handler) {
-        handler.onCall(this);
-        for (VisualPlanNode subNode : getSubNodeList()) {
-            subNode.preOrderHandle(handler);
-        }
-    }
-
+    
     public final void levelHandle(VisualPlanHandler handler) {
         Queue<VisualPlanNode> queue = new LinkedList<>();
         int levelIndex = 0;
@@ -65,12 +58,5 @@ public abstract class VisualPlanNode {
             }
         }
         handler.drawLine();
-    }
-
-    public final void postOrderHandle(VisualPlanHandler handler) {
-        for (VisualPlanNode subNode : getSubNodeList()) {
-            subNode.postOrderHandle(handler);
-        }
-        handler.onCall(this);
     }
 }

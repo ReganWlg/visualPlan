@@ -15,7 +15,7 @@ import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class MySQLVisualPlanTreeGenerator extends VisualPlanTreeGenerator {
+public final class MySQLVisualPlanTreeGenerator implements VisualPlanTreeGenerator {
     private static VisualPlanTreeGenerator _instance = new MySQLVisualPlanTreeGenerator();
 
     private MySQLVisualPlanTreeGenerator() {
@@ -27,7 +27,12 @@ public final class MySQLVisualPlanTreeGenerator extends VisualPlanTreeGenerator 
     }
 
     @Override
-    protected String getPlanRawString(Statement stmt, String sql) throws SQLException {
+    public VisualPlanNode getVisualPlanTree(Statement stmt, String sql) throws SQLException {
+        String planRawString = getPlanRawString(stmt, sql);
+        return convVisualPlanTree(planRawString);
+    }
+
+    private String getPlanRawString(Statement stmt, String sql) throws SQLException {
         String planRawString = null;
         ResultSet rs = stmt.executeQuery(String.format("explain analyze %s", sql));
         if (!rs.next()) {
@@ -39,8 +44,8 @@ public final class MySQLVisualPlanTreeGenerator extends VisualPlanTreeGenerator 
         return planRawString;
     }
 
-    @Override
-    protected VisualPlanNode convVisualPlanTree(String planRawString) {
+    // public for debug, this function should be private.
+    public VisualPlanNode convVisualPlanTree(String planRawString) {
         String[] nodeRawStrings = planRawString.split("\n");
         Queue<LevelAndDescription> levelAndDescriptionQueue = new LinkedList<>();
         for (String nodeRawString : nodeRawStrings) {
@@ -69,13 +74,14 @@ public final class MySQLVisualPlanTreeGenerator extends VisualPlanTreeGenerator 
     };
 
     private Pattern _levelAndDescriptionPattern = Pattern.compile("(.*)-> (.*)");
+    private final int RECESS_LENGTH = 4;
     private LevelAndDescription splitLevelAndDescription(String nodeRawString) {
         Matcher matcher = _levelAndDescriptionPattern.matcher(nodeRawString);
         if (!matcher.find()) {
             System.err.println(String.format("can't split, please check raw string: %s", nodeRawString));
             return null;
         }
-        int level = matcher.group(1).length() / 4;
+        int level = matcher.group(1).length() / RECESS_LENGTH;
         String description = matcher.group(2);
         return new LevelAndDescription(level, description);
     }
