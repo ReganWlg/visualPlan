@@ -7,16 +7,18 @@ import java.util.Queue;
 public abstract class VisualPlanNode {
     private int _level = 0;
     private List<VisualPlanNode> _subNodeList = null;
+    private VisualPlanNode _parentNode = null;
 
     // 层序遍历时使用的变量，前端用
-    // 父结点
-    private VisualPlanNode _parentNode = null;
     // 在前端层序遍历时的索引
     private int _levelIndex = 0;
 
     public VisualPlanNode(int level, List<VisualPlanNode> subNodeList) {
         _level = level;
         _subNodeList = subNodeList;
+        for (VisualPlanNode subNode : getSubNodeList()) {
+            subNode._parentNode = this;
+        }
     }
 
     public int getLevel() {
@@ -29,10 +31,6 @@ public abstract class VisualPlanNode {
 
     public VisualPlanNode getParentNode() {
         return _parentNode;
-    }
-
-    private void setParentNode(VisualPlanNode parentNode) {
-        _parentNode = parentNode;
     }
 
     public int getLevelIndex() {
@@ -52,7 +50,6 @@ public abstract class VisualPlanNode {
             VisualPlanNode node = queue.remove();
             handler.onCall(node);
             for (VisualPlanNode subNode : node.getSubNodeList()) {
-                subNode.setParentNode(node);
                 subNode.setLevelIndex(levelIndex++);
                 queue.add(subNode);
             }
