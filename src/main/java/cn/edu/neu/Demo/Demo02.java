@@ -23,7 +23,8 @@ public class Demo02 {
         MySQLVisualPlanTreeGenerator mySQLVisualPlanTreeGenerator = (MySQLVisualPlanTreeGenerator)visualPlanTreeGenerator;
         VisualPlanNode root = mySQLVisualPlanTreeGenerator.convVisualPlanTree(planRawString);
         System.out.println("levelOrder: ");
-        root.levelHandle(new PrintHandler());
+        PrintHandler printHandler = new PrintHandler();
+        printHandler.draw(root);
         Application.launch(MainStage.class, args);
     }
 }

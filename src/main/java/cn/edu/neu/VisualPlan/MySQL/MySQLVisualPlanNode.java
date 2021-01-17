@@ -1,6 +1,8 @@
 package cn.edu.neu.VisualPlan.MySQL;
 
+import cn.edu.neu.VisualPlan.Graphics.RectangleField;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
+import javafx.scene.text.Text;
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,11 @@ public final class MySQLVisualPlanNode extends VisualPlanNode {
     @Override
     public String toString() {
         return String.format("level: %d, description: %s, fieldMap: %s", getLevel(), getDescription(), _fieldMap.toString());
-//        return String.format("level: %d, type: %s", getLevel(), getFieldByKey("type"));
+    }
+
+    @Override
+    public RectangleField createRectangleField() {
+        RectangleField rectangleField = super.createRectangleField();
+        return rectangleField;
     }
 }

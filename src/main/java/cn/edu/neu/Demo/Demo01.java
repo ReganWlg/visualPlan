@@ -36,26 +36,10 @@ public class Demo01 {
             VisualPlanTreeGenerator visualPlanTreeGenerator = VisualPlanTreeGeneratorFactory.create(dbms);
             // 获取执行计划可视化数据
             VisualPlanNode root = visualPlanTreeGenerator.getVisualPlanTree(stmt, sql);
-            // 前端使用数据
-            // todo by li geng, example:
-//            class PrintHandler implements VisualPlanHandler {
-//                public void onCall(VisualPlanNode node) {
-//                    System.out.println(node.toString());
-//                }
-//            }
-
-//            root.preOrderHandle(new PrintHandler());
             System.out.println("levelOrder: ");
-            root.levelHandle(new PrintHandler());
-//            root.postOrderHandle(new PrintHandler());
-
+            PrintHandler printHandler = new PrintHandler();
+            printHandler.draw(root);
             Application.launch(MainStage.class, args);
-            /*
-            System.out.println("level:");
-            root.levelHandle(new PrintHandler());
-            System.out.println("postOrder:");
-            root.postOrderHandle(new PrintHandler());
-             */
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

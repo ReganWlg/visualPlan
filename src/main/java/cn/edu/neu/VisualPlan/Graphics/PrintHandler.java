@@ -1,12 +1,14 @@
 package cn.edu.neu.VisualPlan.Graphics;
 
-import cn.edu.neu.VisualPlan.VisualPlanHandler;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class PrintHandler implements VisualPlanHandler {
+
+public class PrintHandler {
 
     private static AnchorPane _root = new AnchorPane();
 
@@ -24,12 +26,28 @@ public class PrintHandler implements VisualPlanHandler {
         return _root;
     }
 
-    public void onCall(VisualPlanNode node) {
+    public final void draw(VisualPlanNode root) {
+        Queue<VisualPlanNode> queue = new LinkedList<>();
+        int levelIndex = 0;
+        root.setLevelIndex(levelIndex++);
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            VisualPlanNode node = queue.remove();
+            drawNode(node);
+            for (VisualPlanNode subNode : node.getSubNodeList()) {
+                subNode.setLevelIndex(levelIndex++);
+                queue.add(subNode);
+            }
+        }
+        drawLine(root);
+    }
+
+    public void drawNode(VisualPlanNode node) {
         System.out.println(node.toString());
 
         // 添加第一个结点
         if (node.getLevel() == 0) {
-            RectangleField rectangleField = new RectangleField(node);
+            RectangleField rectangleField = node.createRectangleField();
             rectangleField.setLayoutX(40);
             rectangleField.setLayoutY(40);
             _root.getChildren().add(rectangleField);
@@ -39,7 +57,7 @@ public class PrintHandler implements VisualPlanHandler {
 
         // 在当前层添加结点
         if (node.getLevel() == currentLevel) {
-            RectangleField rectangleField = new RectangleField(node);
+            RectangleField rectangleField = node.createRectangleField();
             RectangleField lastNode = (RectangleField) _root.getChildren().get(childrenNum - 1);
 
             // 若即将加入的结点与上一个结点的parent是同一个
@@ -165,7 +183,7 @@ public class PrintHandler implements VisualPlanHandler {
     }
 
     // 所有结点位置均调整完，开始画结点之间的线
-    public void drawLine() {
+    public void drawLine(VisualPlanNode node) {
         for (int i = 0; i < childrenNum; i++) {
             RectangleField parent = (RectangleField) _root.getChildren().get(i);
             double parentX = parent.getLayoutX() + RECTANGLE_WIDTH / 2;

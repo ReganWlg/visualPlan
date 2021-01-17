@@ -1,5 +1,7 @@
 package cn.edu.neu.VisualPlan;
 
+import cn.edu.neu.VisualPlan.Graphics.RectangleField;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -37,23 +39,11 @@ public abstract class VisualPlanNode {
         return _levelIndex;
     }
 
-    private void setLevelIndex(int levelIndex) {
+    public void setLevelIndex(int levelIndex) {
         _levelIndex = levelIndex;
     }
-    
-    public final void levelHandle(VisualPlanHandler handler) {
-        Queue<VisualPlanNode> queue = new LinkedList<>();
-        int levelIndex = 0;
-        this.setLevelIndex(levelIndex++);
-        queue.add(this);
-        while (!queue.isEmpty()) {
-            VisualPlanNode node = queue.remove();
-            handler.onCall(node);
-            for (VisualPlanNode subNode : node.getSubNodeList()) {
-                subNode.setLevelIndex(levelIndex++);
-                queue.add(subNode);
-            }
-        }
-        handler.drawLine();
+
+    public RectangleField createRectangleField() {
+        return new RectangleField(this);
     }
 }
