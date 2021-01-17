@@ -3,6 +3,7 @@ package cn.edu.neu.VisualPlan.Graphics;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
@@ -13,6 +14,7 @@ public class MainStage extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         AnchorPane root = PrintHandler.getRoot();
+        root.setPadding(new Insets(20, 20, 20, 20));
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(root);
         // 滚动条显示策略

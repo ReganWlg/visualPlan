@@ -30,8 +30,8 @@ public class PrintHandler implements VisualPlanHandler {
         // 添加第一个结点
         if (node.getLevel() == 0) {
             RectangleField rectangleField = new RectangleField(node);
-            rectangleField.setLayoutX(20);
-            rectangleField.setLayoutY(20);
+            rectangleField.setLayoutX(40);
+            rectangleField.setLayoutY(40);
             _root.getChildren().add(rectangleField);
             childrenNum++;
             return;
@@ -40,19 +40,42 @@ public class PrintHandler implements VisualPlanHandler {
         // 在当前层添加结点
         if (node.getLevel() == currentLevel) {
             RectangleField rectangleField = new RectangleField(node);
-            VisualPlanNode lastNode = ((RectangleField) _root.getChildren().get(childrenNum - 1)).getNode();
+            RectangleField lastNode = (RectangleField) _root.getChildren().get(childrenNum - 1);
 
             // 若即将加入的结点与上一个结点的parent是同一个
-            if (lastNode.getParentNode() == node.getParentNode()) {
-                double layoutX = _root.getChildren().get(childrenNum - 1).getLayoutX() + RECTANGLE_WIDTH + RECTANGLE_PADDING;
-                double layoutY = _root.getChildren().get(childrenNum - 1).getLayoutY();
+            if (lastNode.getNode().getParentNode() == node.getParentNode()) {
+                // 先判断lastNode左侧空间是否被占用，若没被占用，只调整lastNode及当前node位置即可
+                RectangleField lastNode2 = (RectangleField) _root.getChildren().get(childrenNum - 2);
 
-                rectangleField.setLayoutX(layoutX);
-                rectangleField.setLayoutY(layoutY);
-                _root.getChildren().add(rectangleField);
-                childrenNum++;
-                // 调整其parent及相关结点位置，向右移动(400 + 20/2 - 200)单位
-                adjustParentLocation1(node.getParentNode(), currentLevel - 1);
+                if ((lastNode2.getNode().getLevel() == currentLevel
+                && lastNode2.getLayoutX() + (RECTANGLE_WIDTH + RECTANGLE_PADDING) * 3 / 2 <= lastNode.getLayoutX())
+                || (lastNode2.getNode().getLevel() < currentLevel
+                && lastNode.getLayoutX() - (RECTANGLE_WIDTH + RECTANGLE_PADDING) / 2 >= 40)) {
+                    // 调整lastNode位置，向左平移
+                    _root.getChildren().get(childrenNum - 1).setLayoutX(lastNode.getLayoutX() - (RECTANGLE_WIDTH + RECTANGLE_PADDING) / 2);
+
+                    // 为新node设置位置
+                    double layoutX = _root.getChildren().get(childrenNum - 1).getLayoutX() + RECTANGLE_WIDTH + RECTANGLE_PADDING;
+                    double layoutY = _root.getChildren().get(childrenNum - 1).getLayoutY();
+
+                    rectangleField.setLayoutX(layoutX);
+                    rectangleField.setLayoutY(layoutY);
+                    _root.getChildren().add(rectangleField);
+                    childrenNum++;
+                }
+                // lastNode左侧空间被占用，则在lastNode右侧位置直接添加结点，并调整parent位置
+                else {
+                    double layoutX = _root.getChildren().get(childrenNum - 1).getLayoutX() + RECTANGLE_WIDTH + RECTANGLE_PADDING;
+                    double layoutY = _root.getChildren().get(childrenNum - 1).getLayoutY();
+
+                    rectangleField.setLayoutX(layoutX);
+                    rectangleField.setLayoutY(layoutY);
+                    _root.getChildren().add(rectangleField);
+                    childrenNum++;
+                    // 调整其parent及相关结点位置，向右移动(400 + 20/2 - 200)单位
+                    adjustParentLocation(node.getParentNode(), currentLevel - 1);
+
+                }
             }
             // 若即将加入的结点与上一个结点的parent不同
             else {
@@ -67,7 +90,7 @@ public class PrintHandler implements VisualPlanHandler {
                     _root.getChildren().add(rectangleField);
                     childrenNum++;
                     // 需要调节parent及相关结点位置
-                    adjustParentLocation2(node.getParentNode(), currentLevel - 1);
+                    adjustParentLocation(node.getParentNode(), currentLevel - 1);
                 } else {
                     rectangleField.setLayoutX(parentLayoutX);
                     rectangleField.setLayoutY(parentLayoutY + RECTANGLE_HEIGHT + LEVEL_PADDING);
@@ -91,27 +114,8 @@ public class PrintHandler implements VisualPlanHandler {
         }
     }
 
-    // 第一种调整方式
-    private void adjustParentLocation1(VisualPlanNode node, int level) {
-        int currentNodeLevel = node.getLevel();
-        int currentNodeLevelIndex = node.getLevelIndex();
-
-        // 将parent所在level的右侧Node的位置进行调整
-        while (level == currentNodeLevel) {
-            double preLayoutX = _root.getChildren().get(currentNodeLevelIndex).getLayoutX();
-            _root.getChildren().get(currentNodeLevelIndex).setLayoutX(preLayoutX + (RECTANGLE_WIDTH + RECTANGLE_PADDING) / 2);
-            currentNodeLevelIndex++;
-            VisualPlanNode nextNode = ((RectangleField) _root.getChildren().get(currentNodeLevelIndex)).getNode();
-            currentNodeLevel = nextNode.getLevel();
-        }
-
-        if (level != 0) {
-            adjustParentLocation1(node.getParentNode(), level - 1);
-        }
-    }
-
-    // 第二种调整方式
-    private void adjustParentLocation2(VisualPlanNode node, int level) {
+    // 调整parent结点的位置
+    private void adjustParentLocation(VisualPlanNode node, int level) {
         int currentNodeLevel = node.getLevel();
         int currentNodeLevelIndex = node.getLevelIndex();
 
@@ -156,10 +160,11 @@ public class PrintHandler implements VisualPlanHandler {
         }
 
         if (level != 0) {
-            adjustParentLocation2(node.getParentNode(), level - 1);
+            adjustParentLocation(node.getParentNode(), level - 1);
         }
     }
 
+    // 所有结点位置均调整完，开始画结点之间的线
     public void drawLine() {
         for (int i = 0; i < childrenNum; i++) {
             RectangleField parent = (RectangleField) _root.getChildren().get(i);
