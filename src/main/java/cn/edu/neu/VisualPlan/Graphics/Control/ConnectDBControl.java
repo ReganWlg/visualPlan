@@ -22,39 +22,34 @@ import java.util.ResourceBundle;
 
 public class ConnectDBControl implements Initializable {
     @FXML
-    private TextField txtDBMS;
+    private TextField txt_dbms;
     @FXML
-    private TextField txtIP;
+    private TextField txt_ip;
     @FXML
-    private TextField txtPort;
+    private TextField txt_port;
     @FXML
-    private TextField txtDatabase;
+    private TextField txt_database;
     @FXML
-    private TextField txtUser;
+    private TextField txt_user;
     @FXML
-    private PasswordField pwdPassword;
+    private PasswordField pwd_password;
 
-    private String dbms;
-    private String ip;
-    private String port;
-    private String database;
-    private String user;
     private Connection conn;
 
     public String getDbms() {
-        return dbms;
+        return txt_dbms.getText();
     }
     public String getIp() {
-        return ip;
+        return txt_ip.getText();
     }
     public String getPort() {
-        return port;
+        return txt_port.getText();
     }
     public String getDatabase() {
-        return database;
+        return txt_database.getText();
     }
     public String getUser() {
-        return user;
+        return txt_user.getText();
     }
     public Connection getConn() {
         return conn;
@@ -65,30 +60,34 @@ public class ConnectDBControl implements Initializable {
 
     }
 
+    // “重置”按钮
     public void clear(ActionEvent event) {
-        txtIP.setText("");
-        txtPort.setText("");
-        txtDatabase.setText("");
-        txtUser.setText("");
-        pwdPassword.setText("");
+        txt_ip.setText("");
+        txt_port.setText("");
+        txt_database.setText("");
+        txt_user.setText("");
+        pwd_password.setText("");
     }
 
-
+    // “连接”按钮
     public void connect(ActionEvent event) throws Exception {
-        dbms = txtDBMS.getText();
-        ip = txtIP.getText();
-        port = txtPort.getText();
-        database = txtDatabase.getText();
-        String database1 = database;
-        if (ip.equals("localhost")) {
+        
+        String database1 = txt_database.getText();
+        if (txt_ip.getText().equals("localhost")) {
             database1 += "?useSSL=true&serverTimezone=UTC";
         }
-        user = txtUser.getText();
-        String password = pwdPassword.getText();
 
-        String jdbcUrl = String.format("jdbc:%s://%s:%s/%s", dbms, ip, port, database1);
+        String jdbcUrl = String.format(
+                "jdbc:%s://%s:%s/%s",
+                txt_dbms.getText(),
+                txt_ip.getText(),
+                txt_port.getText(),
+                database1);
         try {
-            conn = DriverManager.getConnection(jdbcUrl, user, password);
+            conn = DriverManager.getConnection(
+                    jdbcUrl,
+                    txt_user.getText(),
+                    pwd_password.getText());
 
             // 将当前窗口控制器保存到map中
             StageManager.CONTROLLER.put("ConnectDBControl", this);

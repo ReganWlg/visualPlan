@@ -12,33 +12,33 @@
           prefHeight="400.0" prefWidth="600.0"
           alignment="CENTER" hgap="20" vgap="20">
     <Label text="dbms: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-    <TextField fx:id="txtDBMS" text="mysql"
+    <TextField fx:id="txt_dbms" text="mysql"
                GridPane.columnIndex="1" GridPane.rowIndex="0" disable="true"/>
 
     <Label text="ip: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <TextField fx:id="txtIP" text="localhost"
+    <TextField fx:id="txt_ip" text="localhost"
                GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
     <Label text="port: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-    <TextField fx:id="txtPort" text="3306"
+    <TextField fx:id="txt_port" text="3306"
                GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
     <Label text="database: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-    <TextField fx:id="txtDatabase" text="information_schema"
+    <TextField fx:id="txt_database" text="information_schema"
                GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
     <Label text="user: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-    <TextField fx:id="txtUser" text="root"
+    <TextField fx:id="txt_user" text="root"
                GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
     <Label text="password: " GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-    <PasswordField fx:id="pwdPassword" text="123456"
+    <PasswordField fx:id="pwd_password" text="123456"
                    GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
-    <Button fx:id="btnClear" text="重置"
+    <Button text="重置"
             GridPane.columnIndex="0" GridPane.rowIndex="6"
             onAction="#clear"/>
     <HBox GridPane.columnIndex="1" GridPane.rowIndex="6" alignment="CENTER_RIGHT">
-        <Button fx:id="btnConnect" text="连接" onAction="#connect"/>
+        <Button text="连接" onAction="#connect"/>
     </HBox>
 </GridPane>

@@ -12,7 +12,6 @@ import javafx.scene.control.ScrollPane;
 
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
@@ -33,6 +32,7 @@ public class MainStageControl implements Initializable {
     @FXML
     private Label l_sql;
 
+    // MainStage初始化
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ConnectDBControl connectDBControl = (ConnectDBControl) StageManager.CONTROLLER.get("ConnectDBControl");
