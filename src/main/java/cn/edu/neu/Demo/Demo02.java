@@ -1,12 +1,10 @@
 package cn.edu.neu.Demo;
 
-import cn.edu.neu.VisualPlan.Graphics.MainStage;
-import cn.edu.neu.VisualPlan.Graphics.PrintHandler;
+import cn.edu.neu.VisualPlan.Graphics.Util.PrintHandler;
 import cn.edu.neu.VisualPlan.MySQL.MySQLVisualPlanTreeGenerator;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGenerator;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGeneratorFactory;
-import javafx.application.Application;
 
 public class Demo02 {
     public static void main(String[] args) {
@@ -25,6 +23,7 @@ public class Demo02 {
         System.out.println("levelOrder: ");
         PrintHandler printHandler = new PrintHandler();
         printHandler.draw(root);
-        Application.launch(MainStage.class, args);
+        // UI与控制层分离后，此部分不再使用，使用Demo03模式
+        // Application.launch(MainStage.class, args);
     }
 }

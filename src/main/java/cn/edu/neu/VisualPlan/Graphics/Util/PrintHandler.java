@@ -1,4 +1,4 @@
-package cn.edu.neu.VisualPlan.Graphics;
+package cn.edu.neu.VisualPlan.Graphics.Util;
 
 import cn.edu.neu.VisualPlan.VisualPlanNode;
 import javafx.scene.layout.AnchorPane;
@@ -10,7 +10,7 @@ import java.util.Queue;
 
 public class PrintHandler {
 
-    private static AnchorPane _root = new AnchorPane();
+    private AnchorPane _root = new AnchorPane();
 
     private int currentLevel = 0;
 
@@ -22,7 +22,7 @@ public class PrintHandler {
     private final double RECTANGLE_WIDTH = 400;
     private final double RECTANGLE_HEIGHT = 180;
 
-    public static AnchorPane getRoot() {
+    public AnchorPane getRoot() {
         return _root;
     }
 

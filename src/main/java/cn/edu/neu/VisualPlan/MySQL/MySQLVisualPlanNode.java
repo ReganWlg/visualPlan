@@ -1,8 +1,7 @@
 package cn.edu.neu.VisualPlan.MySQL;
 
-import cn.edu.neu.VisualPlan.Graphics.RectangleField;
+import cn.edu.neu.VisualPlan.Graphics.Util.RectangleField;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
-import javafx.scene.text.Text;
 
 import java.util.List;
 import java.util.Map;

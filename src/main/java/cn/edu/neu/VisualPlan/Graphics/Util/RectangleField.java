@@ -1,4 +1,4 @@
-package cn.edu.neu.VisualPlan.Graphics;
+package cn.edu.neu.VisualPlan.Graphics.Util;
 
 import cn.edu.neu.VisualPlan.VisualPlanNode;
 import javafx.scene.layout.StackPane;

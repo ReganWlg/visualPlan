@@ -1,10 +1,8 @@
 package cn.edu.neu.VisualPlan;
 
-import cn.edu.neu.VisualPlan.Graphics.RectangleField;
+import cn.edu.neu.VisualPlan.Graphics.Util.RectangleField;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public abstract class VisualPlanNode {
     private int _level = 0;

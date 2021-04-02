@@ -1,9 +1,7 @@
 package cn.edu.neu.Demo;
 
 import cn.edu.neu.VisualPlan.*;
-import cn.edu.neu.VisualPlan.Graphics.MainStage;
-import cn.edu.neu.VisualPlan.Graphics.PrintHandler;
-import javafx.application.Application;
+import cn.edu.neu.VisualPlan.Graphics.Util.PrintHandler;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -39,7 +37,8 @@ public class Demo01 {
             System.out.println("levelOrder: ");
             PrintHandler printHandler = new PrintHandler();
             printHandler.draw(root);
-            Application.launch(MainStage.class, args);
+            // UI与控制层分离后，此部分不再使用，使用Demo03模式
+            // Application.launch(MainStage.class, args);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

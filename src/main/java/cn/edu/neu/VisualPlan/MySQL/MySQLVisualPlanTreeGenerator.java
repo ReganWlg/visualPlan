@@ -29,6 +29,7 @@ public final class MySQLVisualPlanTreeGenerator implements VisualPlanTreeGenerat
     @Override
     public VisualPlanNode getVisualPlanTree(Statement stmt, String sql) throws SQLException {
         String planRawString = getPlanRawString(stmt, sql);
+        System.out.println(planRawString.toString());
         return convVisualPlanTree(planRawString);
     }
 
