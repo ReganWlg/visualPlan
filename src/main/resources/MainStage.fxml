@@ -13,7 +13,7 @@
     <GridPane prefWidth="800" hgap="20" vgap="20">
         <padding>
             <Insets top="20" right="20" bottom="20" left="20"/></padding>
-        <Label text="当前数据库连接信息：" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
+        <Label text="当前数据库连接状态：" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
         <Label text="DBMS: " GridPane.rowIndex="1" GridPane.columnIndex="0"/>
         <Label fx:id="l_dbms" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
         <Label text="IP: " GridPane.rowIndex="2" GridPane.columnIndex="0"/>
@@ -24,8 +24,11 @@
         <Label fx:id="l_database" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
         <Label text="User: " GridPane.rowIndex="5" GridPane.columnIndex="0"/>
         <Label fx:id="l_user" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
-        <Label text="SQL: " GridPane.rowIndex="6" GridPane.columnIndex="0"/>
-        <Label fx:id="l_sql" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+        <HBox alignment="CENTER" GridPane.rowIndex="6" GridPane.columnSpan="2">
+            <Button text="断开当前数据库" onAction="#disconnect"/>
+        </HBox>
+        <Label text="SQL: " GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+        <Label fx:id="l_sql" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
     </GridPane>
     <ScrollPane fx:id="scrollPane"
                 hbarPolicy="AS_NEEDED" vbarPolicy="ALWAYS"

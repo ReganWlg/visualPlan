@@ -5,15 +5,17 @@ import cn.edu.neu.VisualPlan.Graphics.Util.StageManager;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGenerator;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGeneratorFactory;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainStageControl implements Initializable {
@@ -40,10 +42,6 @@ public class MainStageControl implements Initializable {
         l_ip.setText(connectDBControl.getIp());
         l_port.setText(connectDBControl.getPort());
         l_database.setText(connectDBControl.getDatabase());
-        String database = l_database.getText();
-        if (l_ip.getText().equals("localhost")) {
-            database += "?useSSL=true&serverTimezone=UTC";
-        }
         l_user.setText(connectDBControl.getUser());
         String sql = "select * from VIEWS";
         l_sql.setText(sql);
@@ -85,5 +83,19 @@ public class MainStageControl implements Initializable {
         }
     }
 
-
+    // 断开当前数据库连接
+    public void disconnect(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("确认提示框");
+        alert.setHeaderText("是否确认断开当前数据库？");
+        alert.setContentText("确认断开将返回连接数据库界面");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            StageManager.STAGE.get("MainStage").close();
+            StageManager.STAGE.remove("MainStage");
+            StageManager.CONTROLLER.remove("MainStageControl");
+            Stage stage = StageManager.STAGE.get("ConnectDB");
+            stage.show();
+        }
+    }
 }
