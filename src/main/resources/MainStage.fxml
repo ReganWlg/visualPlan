@@ -7,12 +7,14 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="cn.edu.neu.VisualPlan.Graphics.Control.MainStageControl">
-    <GridPane prefWidth="800" hgap="20" vgap="20">
+    <GridPane fx:id="gridPane" hgap="20" vgap="20" minWidth="300">
         <padding>
-            <Insets top="20" right="20" bottom="20" left="20"/></padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
         <Label text="当前数据库连接状态：" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
         <Label text="DBMS: " GridPane.rowIndex="1" GridPane.columnIndex="0"/>
         <Label fx:id="l_dbms" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
@@ -27,12 +29,19 @@
         <HBox alignment="CENTER" GridPane.rowIndex="6" GridPane.columnSpan="2">
             <Button text="断开当前数据库" onAction="#disconnect"/>
         </HBox>
-        <Label text="SQL: " GridPane.rowIndex="7" GridPane.columnIndex="0"/>
-        <Label fx:id="l_sql" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+        <Label text="SQL: " GridPane.rowIndex="7" GridPane.columnSpan="2"/>
+        <TextArea fx:id="txt_sql" text="select * from VIEWS"
+                   GridPane.rowIndex="8" GridPane.columnSpan="2" prefHeight="200"/>
+        <HBox alignment="CENTER" GridPane.rowIndex="9" GridPane.columnSpan="2">
+            <Button text="查询执行计划" onAction="#queryExecutionPlan"/>
+        </HBox>
     </GridPane>
     <ScrollPane fx:id="scrollPane"
                 hbarPolicy="AS_NEEDED" vbarPolicy="ALWAYS"
                 fitToHeight="true" fitToWidth="true">
-
+        <HBox alignment="CENTER">
+            <Label text="当前没有查询执行计划"/>
+        </HBox>
     </ScrollPane>
+
 </HBox>

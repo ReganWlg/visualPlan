@@ -1,6 +1,9 @@
 package cn.edu.neu.VisualPlan.Graphics.Control;
 
 import cn.edu.neu.VisualPlan.Graphics.Util.StageManager;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -100,6 +103,23 @@ public class ConnectDBControl implements Initializable {
             stage.setTitle("查询执行计划可视化");
             stage.setMaximized(true);
             stage.setScene(new Scene(root));
+            // 主界面组件宽度自适应
+            stage.widthProperty().addListener(new ChangeListener<Number>() {
+                @Override
+                public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            Scene scene = stage.getScene();
+                            double width = stage.getWidth();
+                            GridPane gridPane = (GridPane) scene.lookup("#gridPane");
+                            ScrollPane scrollPane = (ScrollPane) scene.lookup("#scrollPane");
+                            gridPane.setPrefWidth(width * 0.2);
+                            scrollPane.setPrefWidth(width * 0.8);
+                        }
+                    });
+                }
+            });
             stage.show();
 
             // 将MainStage窗口保存到map中
@@ -133,15 +153,6 @@ public class ConnectDBControl implements Initializable {
 
             alert.getDialogPane().setExpandableContent(expContent);
             alert.showAndWait();
-        } finally {
-            // 释放资源
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 }
