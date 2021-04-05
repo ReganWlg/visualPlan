@@ -42,7 +42,7 @@
 
 - 语法：explain analyze \<DQL\>
 - 例如：explain analyze explain analyze;
-- 结果：（窗口问题，显式不全）
+- 结果：（窗口问题，显示不全）
 
     ![mysql analyze](./Images/mysql_analyze.png)
 
@@ -80,8 +80,6 @@ java 的通用 dbms 接口协议。
 
 除了 java 的，C++ 的实现最好。
 
-
-
 考虑到可能以后与 calcite 结合，所以使用 JDBC。
 
 # 6. 可视化框架
@@ -92,6 +90,8 @@ java 的通用 dbms 接口协议。
 2. 与甲方的技术栈保持一致。
 
 # 7. 目前的效果
+
+## 7.1 version 1.0
 
 ```cpp
 -> Nested loop left join  (cost=0.70 rows=1)
@@ -104,6 +104,33 @@ java 的通用 dbms 接口协议。
 ```
 
 ![demo](./Images/demo.png)
+
+## 7.2 version 2.0
+
+### 7.2.1 连接数据库界面
+
+![connect DB stage](./Images/connect_DB_stage.png)
+
+- 数据库连接成功时，进入主界面
+- 数据库连接失败时，弹出错误提示框
+
+  ![connect DB failed alert](./Images/connect_DB_failed_alert.png)
+
+### 7.2.2 主界面
+
+主界面初始状态没有查询执行计划，左侧显示当前数据库连接信息，以及待查询的SQL语句，右侧为空白。
+
+![main stage](./Images/main_stage.png)
+
+- 断开数据库
+  
+  点击“断开数据库”按钮，将会断开当前数据库，返回至连接数据库界面
+  ![disconnect DB](./Images/disconnect_DB.png)
+
+- 查询执行计划
+
+  点击“查询执行计划”按钮，将对当前SQL语句进行查询，显示在右侧，可重复编辑SQL语句进行多次查询
+  ![query execution plan](./Images/query_execution_plan.png)
 
 # 8. 以后的任务
 
