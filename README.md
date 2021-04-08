@@ -91,7 +91,7 @@ java 的通用 dbms 接口协议。
 
 # 7. 目前的效果
 
-## 7.1 version 1.0
+## 1月16日更新
 
 ```cpp
 -> Nested loop left join  (cost=0.70 rows=1)
@@ -105,36 +105,44 @@ java 的通用 dbms 接口协议。
 
 ![demo](./Images/demo.png)
 
-## 7.2 version 2.0
+## 4月5日更新
 
-### 7.2.1 连接数据库界面
+1. 连接数据库界面
 
-![connect DB stage](./Images/connect_DB_stage.png)
+   ![connect DB stage](./Images/connect_DB_stage.png)
 
-- 数据库连接成功时，进入主界面
-- 数据库连接失败时，弹出错误提示框
+   - 数据库连接成功时，进入主界面
+   - 数据库连接失败时，弹出错误提示框
 
-  ![connect DB failed alert](./Images/connect_DB_failed_alert.png)
+     ![connect DB failed alert](./Images/connect_DB_failed_alert.png)
 
-### 7.2.2 主界面
+2. 主界面
 
-主界面初始状态没有查询执行计划，左侧显示当前数据库连接信息，以及待查询的SQL语句，右侧为空白。
+   主界面初始状态没有查询执行计划，左侧显示当前数据库连接信息，以及待查询的SQL语句，右侧为空白。
 
-![main stage](./Images/main_stage.png)
+   ![main stage](./Images/main_stage.png)
 
-- 断开数据库
+   - 断开数据库
   
-  点击“断开数据库”按钮，将会断开当前数据库，返回至连接数据库界面
-  ![disconnect DB](./Images/disconnect_DB.png)
+     点击“断开数据库”按钮，将会断开当前数据库，返回至连接数据库界面
+     ![disconnect DB](./Images/disconnect_DB.png)
 
-- 查询执行计划
+   - 查询执行计划
 
-  点击“查询执行计划”按钮，将对当前SQL语句进行查询，显示在右侧，可重复编辑SQL语句进行多次查询
-  ![query execution plan](./Images/query_execution_plan.png)
+     点击“查询执行计划”按钮，将对当前SQL语句进行查询，显示在右侧，可重复编辑SQL语句进行多次查询
+     ![query execution plan](./Images/query_execution_plan.png)
+
+## 4月8日更新
+
+1. 查询SQL语句有误时增加了错误提示框
+   ![query execution plan failed alert](./Images/query_execution_plan_failed_alert.png)
+
+2. 优化主界面查询执行计划树的显示效果
+   ![optimize the display of visual plan tree](./Images/optimize_the_display_of_visual_plan_tree.png)
 
 # 8. 以后的任务
 
-## 8.1 1月16日新增
+## 1月16日新增
 
 1. 未来在可视化中会强调某些操作的重要性。
 
@@ -144,8 +152,8 @@ java 的通用 dbms 接口协议。
     - 文档在`源码目录/mysql-test/r/*.result`
       ![test](./Images/test.png)
 
-## 8.2 4月5日新增
+## 4月5日新增
 
 1. 除了在界面中显示执行计划每个operator的信息，还要将整体信息汇总显示，初步计划在左下角SQL文本框下方显示。此部分需要研究有哪些信息可以显示出来以及如何汇总这些信息。
-2. 点击“查询执行计划”按钮后，若SQL查询有问题，目前没有错误提示，需要新增一个弹框。
-3. 目前可视化查询执行计划的每个operator中显示的内容过多，需要精简，同时调整每个RectangleField的尺寸。
+2. 点击“查询执行计划”按钮后，若SQL查询有问题，目前没有错误提示，需要新增一个弹框。（4月8日更新已解决）
+3. 目前可视化查询执行计划的每个operator中显示的内容过多，需要精简，同时调整每个RectangleField的尺寸。（4月8日更新已解决，后续有变化再调整）

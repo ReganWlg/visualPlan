@@ -10,8 +10,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -105,7 +108,34 @@ public class MainStageControl implements Initializable {
             printHandler.draw(root);
             scrollPane.setContent(printHandler.getRoot());
         } catch (SQLException e) {
-            e.printStackTrace();
+            // 弹出错误提示框
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("错误提示");
+            alert.setHeaderText("查询失败!");
+            alert.setContentText("请检查SQL语句，重新查询");
+
+            // 将异常轨迹存入缓冲区
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+
+            // 在弹窗中添加扩展区域，用于显示异常轨迹
+            Label label = new Label("Exception stacktrace:");
+            TextArea textArea = new TextArea(sw.toString());
+            textArea.setEditable(false);
+            textArea.setWrapText(true);
+            textArea.setMaxWidth(Double.MAX_VALUE);
+            textArea.setMaxHeight(Double.MAX_VALUE);
+            GridPane.setVgrow(textArea, Priority.ALWAYS);
+            GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+            GridPane expContent = new GridPane();
+            expContent.setMaxWidth(Double.MAX_VALUE);
+            expContent.add(label, 0, 0);
+            expContent.add(textArea, 0, 1);
+
+            alert.getDialogPane().setExpandableContent(expContent);
+            alert.showAndWait();
         }
     }
 }

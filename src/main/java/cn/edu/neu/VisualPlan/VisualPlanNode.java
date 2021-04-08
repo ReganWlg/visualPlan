@@ -44,4 +44,6 @@ public abstract class VisualPlanNode {
     public RectangleField createRectangleField() {
         return new RectangleField(this);
     }
+
+    public abstract String getFieldByKey(String key);
 }

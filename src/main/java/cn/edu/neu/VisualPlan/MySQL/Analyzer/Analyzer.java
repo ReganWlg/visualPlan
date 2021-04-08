@@ -20,7 +20,7 @@ public final class Analyzer {
 
     private Pattern _TimingPattern1 = Pattern.compile("(.*) [(]actual time=(.*)[.][.](.*) rows=(.*) loops=(.*)[)]");
     private Pattern _TimingPattern2 = Pattern.compile("(.*) [(](never executed)[)]");
-    private Pattern _CostAndRowsPattern = Pattern.compile("(.*)  [(]cost=(.*) rows=(.*)[)] .*");
+    private Pattern _CostAndRowsPattern = Pattern.compile("(.*) [(]cost=(.*) rows=(.*)[)]");
     public Map<String, String> getFieldMapByDescription(String description) {
         Map<String, String> fieldMap = new HashMap<>();
 
@@ -41,6 +41,7 @@ public final class Analyzer {
 
         Matcher costAndRowsMatcher = _CostAndRowsPattern.matcher(description);
         if (costAndRowsMatcher.find()) {
+            fieldMap.put("description", costAndRowsMatcher.group(1));
             fieldMap.put("cost", costAndRowsMatcher.group(2));
             fieldMap.put("output_rows", costAndRowsMatcher.group(3));
             description = costAndRowsMatcher.group(1);
