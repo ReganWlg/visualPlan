@@ -140,6 +140,11 @@ java 的通用 dbms 接口协议。
 2. 优化主界面查询执行计划树的显示效果
    ![optimize the display of visual plan tree](./Images/optimize_the_display_of_visual_plan_tree.png)
 
+## 4月12日更新
+
+1. 进一步优化主界面查询执行计划树的显示效果
+   ![optimize the display of visual plan tree 2](./Images/optimize_the_display_of_visual_plan_tree_2.png)
+
 # 8. 以后的任务
 
 ## 1月16日新增
@@ -157,3 +162,7 @@ java 的通用 dbms 接口协议。
 1. 除了在界面中显示执行计划每个operator的信息，还要将整体信息汇总显示，初步计划在左下角SQL文本框下方显示。此部分需要研究有哪些信息可以显示出来以及如何汇总这些信息。
 2. 点击“查询执行计划”按钮后，若SQL查询有问题，目前没有错误提示，需要新增一个弹框。（4月8日更新已解决）
 3. 目前可视化查询执行计划的每个operator中显示的内容过多，需要精简，同时调整每个RectangleField的尺寸。（4月8日更新已解决，后续有变化再调整）
+
+## 4月12日新增
+
+1. 编写PostgreSQL的后端解析部分，编写PostgreSQL的前端接口

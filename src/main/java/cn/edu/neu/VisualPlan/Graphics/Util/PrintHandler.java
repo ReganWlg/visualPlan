@@ -19,8 +19,8 @@ public class PrintHandler {
 
     private final double RECTANGLE_PADDING = 20;
     private final double LEVEL_PADDING = 40;
-    private final double RECTANGLE_WIDTH = 272;
-    private final double RECTANGLE_HEIGHT = 170;
+    private final double RECTANGLE_WIDTH = 300;
+    private final double RECTANGLE_HEIGHT = 160;
 
     public AnchorPane getRoot() {
         return _root;
