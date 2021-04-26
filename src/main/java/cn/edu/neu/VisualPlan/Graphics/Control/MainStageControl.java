@@ -2,6 +2,7 @@ package cn.edu.neu.VisualPlan.Graphics.Control;
 
 import cn.edu.neu.VisualPlan.Graphics.Util.PrintHandler;
 import cn.edu.neu.VisualPlan.Graphics.Util.StageManager;
+import cn.edu.neu.VisualPlan.PostgreSQL.PostgreSQLVisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGenerator;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGeneratorFactory;
@@ -9,8 +10,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.PrintWriter;
@@ -23,6 +28,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainStageControl implements Initializable {
+    @FXML
+    private GridPane gridPane;
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -37,6 +44,10 @@ public class MainStageControl implements Initializable {
     private Label l_user;
     @FXML
     private TextArea txt_sql;
+    @FXML
+    private Label l_planningTime;
+    @FXML
+    private Label l_executionTime;
 
     private Connection conn;
     private Statement stmt;
@@ -105,6 +116,14 @@ public class MainStageControl implements Initializable {
             VisualPlanNode root = visualPlanTreeGenerator.getVisualPlanTree(stmt, txt_sql.getText());
             System.out.println("levelOrder: ");
             PrintHandler printHandler = new PrintHandler();
+
+            if (root instanceof PostgreSQLVisualPlanNode) {
+                l_planningTime.setText(root.getFieldByKey("planning_time"));
+                l_planningTime.setTextFill(Paint.valueOf("#FF0000"));
+                l_executionTime.setText(root.getFieldByKey("execution_time"));
+                l_executionTime.setTextFill(Paint.valueOf("FF0000"));
+            }
+
             printHandler.draw(root);
             scrollPane.setContent(printHandler.getRoot());
         } catch (SQLException e) {

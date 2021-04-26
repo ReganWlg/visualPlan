@@ -145,6 +145,13 @@ java 的通用 dbms 接口协议。
 1. 进一步优化主界面查询执行计划树的显示效果
    ![optimize the display of visual plan tree 2](./Images/optimize_the_display_of_visual_plan_tree_2.png)
 
+## 4月26日更新
+
+1. 支持PostgreSQL查询
+2. 修改数据库连接界面、主界面的部分字体大小，优化显示效果
+   ![queries based on PostgreSQL 1](./Images/queries_based_on_PostgreSQL_1.png)
+   ![queries based on PostgreSQL 2](./Images/queries_based_on_PostgreSQL_2.png)
+
 # 8. 以后的任务
 
 ## 1月16日新增
@@ -165,4 +172,9 @@ java 的通用 dbms 接口协议。
 
 ## 4月12日新增
 
-1. 编写PostgreSQL的后端解析部分，编写PostgreSQL的前端接口
+1. 编写PostgreSQL的后端解析部分，编写PostgreSQL的前端接口。(部分完成)
+
+## 4月26日新增
+
+1. 编写每一个PostgreSQL的operator的解析。
+2. 将MySQL和PostgreSQL的查询用Calcite进行优化，编写Calcite的后端解析部分。

@@ -8,6 +8,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="cn.edu.neu.VisualPlan.Graphics.Control.MainStageControl">
@@ -15,32 +16,87 @@
         <padding>
             <Insets top="20" right="20" bottom="20" left="20"/>
         </padding>
-        <Label text="当前数据库连接状态：" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
-        <Label text="DBMS: " GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+
+        <Label text="当前数据库连接状态：" GridPane.rowIndex="0" GridPane.columnSpan="2">
+            <font>
+                <Font name="System Bold" size="18"/>
+            </font>
+        </Label>
+        <Label text="DBMS: " GridPane.rowIndex="1" GridPane.columnIndex="0">
+            <font>
+                <Font name="System Bold"/>
+            </font>
+        </Label>
         <Label fx:id="l_dbms" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-        <Label text="IP: " GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <Label text="IP: " GridPane.rowIndex="2" GridPane.columnIndex="0">
+            <font>
+                <Font name="System Bold"/>
+            </font>
+        </Label>
         <Label fx:id="l_ip" GridPane.rowIndex="2" GridPane.columnIndex="1" />
-        <Label text="Port: " GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <Label text="Port: " GridPane.rowIndex="3" GridPane.columnIndex="0">
+            <font>
+                <Font name="System Bold"/>
+            </font>
+        </Label>
         <Label fx:id="l_port" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
-        <Label text="Database: " GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <Label text="Database: " GridPane.rowIndex="4" GridPane.columnIndex="0">
+            <font>
+                <Font name="System Bold"/>
+            </font>
+        </Label>
         <Label fx:id="l_database" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
-        <Label text="User: " GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <Label text="User: " GridPane.rowIndex="5" GridPane.columnIndex="0">
+            <font>
+                <Font name="System Bold"/>
+            </font>
+        </Label>
         <Label fx:id="l_user" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
-        <HBox alignment="CENTER" GridPane.rowIndex="6" GridPane.columnSpan="2">
-            <Button text="断开当前数据库" onAction="#disconnect"/>
+        <HBox alignment="CENTER" GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.columnSpan="2">
+            <Button text="断开当前数据库" onAction="#disconnect">
+                <font>
+                    <Font name="System Bold"/>
+                </font>
+            </Button>
         </HBox>
-        <Label text="SQL: " GridPane.rowIndex="7" GridPane.columnSpan="2"/>
-        <TextArea fx:id="txt_sql" text="select * from VIEWS"
+
+        <Label text="SQL: " GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.columnSpan="2">
+            <font>
+                <Font name="System Bold" size="18"/>
+            </font>
+        </Label>
+        <TextArea fx:id="txt_sql" text="select * from tpch.part where p_mfgr='Manufacturer#5' and p_brand='Brand#53';"
                    GridPane.rowIndex="8" GridPane.columnSpan="2" prefHeight="200"/>
-        <HBox alignment="CENTER" GridPane.rowIndex="9" GridPane.columnSpan="2">
-            <Button text="查询执行计划" onAction="#queryExecutionPlan"/>
+        <HBox alignment="CENTER" GridPane.rowIndex="9" GridPane.columnIndex="0" GridPane.columnSpan="2">
+            <Button text="查询执行计划" onAction="#queryExecutionPlan">
+                <font>
+                    <Font name="System Bold"/>
+                </font>
+            </Button>
         </HBox>
+
+        <Label text="Planning Time: " GridPane.rowIndex="10" GridPane.columnIndex="0">
+            <font>
+                <Font name="System Bold"/>
+            </font>
+        </Label>
+        <Label fx:id="l_planningTime" GridPane.rowIndex="10" GridPane.columnIndex="1"/>
+        <Label text="Execution Time: " GridPane.rowIndex="11" GridPane.columnIndex="0">
+            <font>
+                <Font name="System Bold"/>
+            </font>
+        </Label>
+        <Label fx:id="l_executionTime" GridPane.rowIndex="11" GridPane.columnIndex="1"/>
     </GridPane>
     <ScrollPane fx:id="scrollPane"
                 hbarPolicy="AS_NEEDED" vbarPolicy="ALWAYS"
                 fitToHeight="true" fitToWidth="true">
         <HBox alignment="CENTER">
-            <Label text="当前没有查询执行计划"/>
+            <Label text="当前没有查询执行计划">
+                <font>
+                    <Font size="20"/>
+                </font>
+            </Label>
         </HBox>
     </ScrollPane>
 

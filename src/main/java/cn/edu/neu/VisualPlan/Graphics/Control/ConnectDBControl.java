@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 
 public class ConnectDBControl implements Initializable {
     @FXML
-    private TextField txt_dbms;
+    private ComboBox<String> cb_dbms;
     @FXML
     private TextField txt_ip;
     @FXML
@@ -40,7 +40,7 @@ public class ConnectDBControl implements Initializable {
     private Connection conn;
 
     public String getDbms() {
-        return txt_dbms.getText();
+        return cb_dbms.getValue();
     }
     public String getIp() {
         return txt_ip.getText();
@@ -76,13 +76,13 @@ public class ConnectDBControl implements Initializable {
     public void connect(ActionEvent event) throws Exception {
         
         String database1 = txt_database.getText();
-        if (txt_ip.getText().equals("localhost")) {
+        if (txt_ip.getText().equals("localhost") && cb_dbms.getValue().equals("mysql")) {
             database1 += "?useSSL=true&serverTimezone=UTC";
         }
 
         String jdbcUrl = String.format(
                 "jdbc:%s://%s:%s/%s",
-                txt_dbms.getText(),
+                cb_dbms.getValue(),
                 txt_ip.getText(),
                 txt_port.getText(),
                 database1);

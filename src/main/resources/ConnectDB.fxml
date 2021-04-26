@@ -6,39 +6,82 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.text.Font?>
+<?import javafx.collections.FXCollections?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="cn.edu.neu.VisualPlan.Graphics.Control.ConnectDBControl"
           prefHeight="400.0" prefWidth="600.0"
           alignment="CENTER" hgap="20" vgap="20">
-    <Label text="dbms: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-    <TextField fx:id="txt_dbms" text="mysql"
-               GridPane.columnIndex="1" GridPane.rowIndex="0" disable="true"/>
+    <Label text="dbms: " GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <font>
+            <Font name="System Bold"/>
+        </font>
+    </Label>
+    <ComboBox fx:id="cb_dbms" GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="mysql"/>
+                <String fx:value="postgresql"/>
+            </FXCollections>
+        </items>
+        <value>
+            <String fx:value="mysql"/>
+        </value>
+    </ComboBox>
 
-    <Label text="ip: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <Label text="ip: " GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <font>
+            <Font name="System Bold"/>
+        </font>
+    </Label>
     <TextField fx:id="txt_ip" text="localhost"
                GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-    <Label text="port: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-    <TextField fx:id="txt_port" text="3306"
+    <Label text="port: " GridPane.columnIndex="0" GridPane.rowIndex="2">
+        <font>
+            <Font name="System Bold"/>
+        </font>
+    </Label>
+    <TextField fx:id="txt_port" text="5432"
                GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-    <Label text="database: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-    <TextField fx:id="txt_database" text="information_schema"
+    <Label text="database: " GridPane.columnIndex="0" GridPane.rowIndex="3">
+        <font>
+            <Font name="System Bold"/>
+        </font>
+    </Label>
+    <TextField fx:id="txt_database" text="tpc"
                GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-    <Label text="user: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-    <TextField fx:id="txt_user" text="root"
+    <Label text="user: " GridPane.columnIndex="0" GridPane.rowIndex="4">
+        <font>
+            <Font name="System Bold"/>
+        </font>
+    </Label>
+    <TextField fx:id="txt_user" text="postgres"
                GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-    <Label text="password: " GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-    <PasswordField fx:id="pwd_password" text="123456"
+    <Label text="password: " GridPane.columnIndex="0" GridPane.rowIndex="5">
+        <font>
+            <Font name="System Bold"/>
+        </font>
+    </Label>
+    <PasswordField fx:id="pwd_password" text="regan0429"
                    GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
     <Button text="重置"
             GridPane.columnIndex="0" GridPane.rowIndex="6"
-            onAction="#clear"/>
+            onAction="#clear">
+        <font>
+            <Font name="System Bold"/>
+        </font>
+    </Button>
     <HBox GridPane.columnIndex="1" GridPane.rowIndex="6" alignment="CENTER_RIGHT">
-        <Button text="连接" onAction="#connect"/>
+        <Button text="连接" onAction="#connect">
+            <font>
+                <Font name="System Bold"/>
+            </font>
+        </Button>
     </HBox>
 </GridPane>

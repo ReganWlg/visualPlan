@@ -20,6 +20,7 @@ public final class MySQLVisualPlanNode extends VisualPlanNode {
         return _description;
     }
 
+    @Override
     public String getFieldByKey(String key) {
         return _fieldMap.get(key);
     }
