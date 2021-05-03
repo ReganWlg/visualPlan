@@ -1,5 +1,7 @@
 package cn.edu.neu.VisualPlan.Graphics.Util;
 
+import cn.edu.neu.VisualPlan.MySQL.MySQLVisualPlanNode;
+import cn.edu.neu.VisualPlan.PostgreSQL.PostgreSQLVisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
@@ -19,14 +21,21 @@ public class PrintHandler {
 
     private final double RECTANGLE_PADDING = 20;
     private final double LEVEL_PADDING = 40;
-    private final double RECTANGLE_WIDTH = 300;
-    private final double RECTANGLE_HEIGHT = 160;
+    private double RECTANGLE_WIDTH;
+    private double RECTANGLE_HEIGHT;
 
     public AnchorPane getRoot() {
         return _root;
     }
 
     public final void draw(VisualPlanNode root) {
+        if (root instanceof MySQLVisualPlanNode) {
+            RECTANGLE_WIDTH = 300;
+            RECTANGLE_HEIGHT = 160;
+        } else if (root instanceof PostgreSQLVisualPlanNode){
+            RECTANGLE_WIDTH = 350;
+            RECTANGLE_HEIGHT = 160;
+        }
         Queue<VisualPlanNode> queue = new LinkedList<>();
         int levelIndex = 0;
         root.setLevelIndex(levelIndex++);

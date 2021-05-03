@@ -118,10 +118,7 @@ public class PostgreSQLVisualPlanTreeGenerator implements VisualPlanTreeGenerato
         LevelAndDescription rootLevelAndDescription = levelAndDescriptionQueue.removeFirst();
         int level = rootLevelAndDescription.getLevel();
         ArrayList<String> description = rootLevelAndDescription.getDescription();
-        Map<String, String> fieldMap = Analyzer.getInstance().getFieldMapByDescription(description.get(0));
-        if (level == 0) {
-            Analyzer.getInstance().getFieldMapByPlanningTimeAndExecutionTime(fieldMap, description);
-        }
+        Map<String, String> fieldMap = Analyzer.getInstance().getFieldMapByDescription(description);
         List<VisualPlanNode> subNodeList = new ArrayList<>();
         while (!levelAndDescriptionQueue.isEmpty() && levelAndDescriptionQueue.element().getLevel() == level + 1) {
             VisualPlanNode subNode = buildVisualPlanTree(levelAndDescriptionQueue);

@@ -65,8 +65,27 @@
                 <Font name="System Bold" size="18"/>
             </font>
         </Label>
-        <TextArea fx:id="txt_sql" text="select * from tpch.part where p_mfgr='Manufacturer#5' and p_brand='Brand#53';"
-                   GridPane.rowIndex="8" GridPane.columnSpan="2" prefHeight="200"/>
+<!--        <TextArea fx:id="txt_sql"-->
+<!--                  text="SELECT C_CUSTKEY, C_NAME&#10;-->
+<!--FROM tpch.CUSTOMER C&#10;-->
+<!--WHERE NOT EXISTS (&#10;-->
+<!--    SELECT O.O_CUSTKEY&#10;-->
+<!--    FROM tpch.Orders O, tpch.Lineitem L, tpch.PartSupp PS, tpch.Part P&#10;-->
+<!--    WHERE C.C_CUSTKEY=O.O_CUSTKEY AND&#10;-->
+<!--            O.O_ORDERKEY=L.L_ORDERKEY AND&#10;-->
+<!--            L.L_PARTKEY=PS.PS_PARTKEY AND&#10;-->
+<!--            L.L_SUPPKEY= PS.PS_SUPPKEY AND&#10;-->
+<!--            PS.PS_PARTKEY=P.P_PARTKEY AND&#10;-->
+<!--            P.P_BRAND='Brand#13')&#10;-->
+<!--Limit 200;"-->
+<!--                   GridPane.rowIndex="8" GridPane.columnSpan="2" prefHeight="200"/>-->
+        <TextArea fx:id="txt_sql"
+                  text="Select P.P_NAME, P.P_mfgr,&#10;
+    P.P_RETAILPRICE, PS.PS_SUPPLYCOST&#10;
+From tpch.part P, tpch.partsupp PS&#10;
+Where P.P_RETAILPRICE>PS.PS_SUPPLYCOST&#10;
+Limit 200 "
+                  GridPane.rowIndex="8" GridPane.columnSpan="2" prefHeight="200"/>
         <HBox alignment="CENTER" GridPane.rowIndex="9" GridPane.columnIndex="0" GridPane.columnSpan="2">
             <Button text="查询执行计划" onAction="#queryExecutionPlan">
                 <font>

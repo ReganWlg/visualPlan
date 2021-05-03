@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -26,7 +24,7 @@
             </FXCollections>
         </items>
         <value>
-            <String fx:value="mysql"/>
+            <String fx:value="postgresql"/>
         </value>
     </ComboBox>
 
