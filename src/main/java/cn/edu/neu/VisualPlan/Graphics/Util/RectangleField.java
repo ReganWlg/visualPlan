@@ -1,5 +1,6 @@
 package cn.edu.neu.VisualPlan.Graphics.Util;
 
+import cn.edu.neu.VisualPlan.Calcite.CalciteVisualPlanNode;
 import cn.edu.neu.VisualPlan.MySQL.MySQLVisualPlanNode;
 import cn.edu.neu.VisualPlan.PostgreSQL.PostgreSQLVisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
@@ -180,6 +181,48 @@ public class RectangleField extends StackPane {
             Label actualNumberCycles = new Label(
                     String.format("loops=%s", node.getFieldByKey("actual_loops")));
             gridPane.add(actualNumberCycles, 3, 4);
+        }
+
+        else if (node instanceof CalciteVisualPlanNode) {
+            RECTANGLE_WIDTH = 300;
+            RECTANGLE_HEIGHT = 160;
+            RECTANGLE_ARC_WIDTH = 20;
+            RECTANGLE_ARC_HEIGHT = 20;
+            TEXT_WIDTH = 280;
+
+            rectangle.setWidth(RECTANGLE_WIDTH);
+            rectangle.setHeight(RECTANGLE_HEIGHT);
+            rectangle.setArcWidth(RECTANGLE_ARC_WIDTH);
+            rectangle.setArcHeight(RECTANGLE_ARC_HEIGHT);
+            rectangle.setFill(Paint.valueOf("#F0F8FF"));
+            rectangle.setStroke(Color.BLACK);
+
+            gridPane.setPrefWidth(RECTANGLE_WIDTH);
+            gridPane.setHgap(10);
+            gridPane.setVgap(5);
+            gridPane.setAlignment(Pos.CENTER);
+
+            Label type = new Label(node.getFieldByKey("type"));
+            type.setTextFill(Paint.valueOf("#FF0000"));
+            type.setStyle("-fx-font-weight: bold;");
+            gridPane.add(type, 0, 0);
+            GridPane.setColumnSpan(type, 2);
+
+            Text description = new Text(
+                    String.format("Description: %s", node.getFieldByKey("description")));
+            description.setWrappingWidth(TEXT_WIDTH);
+            gridPane.add(description, 0, 1);
+            GridPane.setColumnSpan(description, 2);
+            GridPane.setMargin(description, new Insets(5, 0, 0, 0));
+
+            Label rowCount = new Label(String.format("RowCount = %s", node.getFieldByKey("rowCount")));
+            gridPane.add(rowCount, 0, 2);
+            GridPane.setMargin(rowCount, new Insets(5, 0, 0, 0));
+
+            Label cumulativeCost = new Label(String.format("Cumulative Cost =%s", node.getFieldByKey("cumulativeCost")));
+            gridPane.add(cumulativeCost, 0, 3);
+            GridPane.setMargin(cumulativeCost, new Insets(5, 0, 0, 0));
+
         }
 
         this.getChildren().addAll(rectangle, gridPane);

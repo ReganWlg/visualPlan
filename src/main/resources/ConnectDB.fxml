@@ -16,7 +16,7 @@
             <Font name="System Bold"/>
         </font>
     </Label>
-    <ComboBox fx:id="cb_dbms" GridPane.columnIndex="1" GridPane.rowIndex="0">
+    <ComboBox fx:id="cb_dbms" GridPane.columnIndex="1" GridPane.rowIndex="0" onAction="#changeDBMS">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="mysql"/>
@@ -52,30 +52,38 @@
     <TextField fx:id="txt_database" text="tpc"
                GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-    <Label text="user: " GridPane.columnIndex="0" GridPane.rowIndex="4">
+    <Label text="schema: " GridPane.columnIndex="0" GridPane.rowIndex="4">
+        <font>
+            <Font name="System Bold"/>
+        </font>
+    </Label>
+    <TextField fx:id="txt_schema" text="tpch"
+               GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+    <Label text="user: " GridPane.columnIndex="0" GridPane.rowIndex="5">
         <font>
             <Font name="System Bold"/>
         </font>
     </Label>
     <TextField fx:id="txt_user" text="postgres"
-               GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+               GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
-    <Label text="password: " GridPane.columnIndex="0" GridPane.rowIndex="5">
+    <Label text="password: " GridPane.columnIndex="0" GridPane.rowIndex="6">
         <font>
             <Font name="System Bold"/>
         </font>
     </Label>
     <PasswordField fx:id="pwd_password" text="regan0429"
-                   GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                   GridPane.columnIndex="1" GridPane.rowIndex="6"/>
 
     <Button text="重置"
-            GridPane.columnIndex="0" GridPane.rowIndex="6"
+            GridPane.columnIndex="0" GridPane.rowIndex="7"
             onAction="#clear">
         <font>
             <Font name="System Bold"/>
         </font>
     </Button>
-    <HBox GridPane.columnIndex="1" GridPane.rowIndex="6" alignment="CENTER_RIGHT">
+    <HBox GridPane.columnIndex="1" GridPane.rowIndex="7" alignment="CENTER_RIGHT">
         <Button text="连接" onAction="#connect">
             <font>
                 <Font name="System Bold"/>

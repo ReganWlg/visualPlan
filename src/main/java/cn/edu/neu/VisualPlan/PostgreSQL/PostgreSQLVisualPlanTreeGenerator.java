@@ -4,6 +4,7 @@ import cn.edu.neu.VisualPlan.PostgreSQL.Analyzer.Analyzer;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGenerator;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,8 +24,25 @@ public class PostgreSQLVisualPlanTreeGenerator implements VisualPlanTreeGenerato
     }
 
     @Override
-    public VisualPlanNode getVisualPlanTree(Statement stmt, String sql) throws SQLException {
-        ArrayList<String> planRawString = getPlanRawString(stmt, sql);
+    public VisualPlanNode getVisualPlanTree(Connection conn, String sql) throws SQLException {
+        Statement stmt = null;
+        ArrayList<String> planRawString = new ArrayList<>();
+        try {
+            // 获取执行 SQL 对象
+            stmt = conn.createStatement();
+            planRawString = getPlanRawString(stmt, sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // 释放资源
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return convVisualPlanTree(planRawString);
     }
 

@@ -1,5 +1,6 @@
 package cn.edu.neu.VisualPlan.Graphics.Util;
 
+import cn.edu.neu.VisualPlan.Calcite.CalciteVisualPlanNode;
 import cn.edu.neu.VisualPlan.MySQL.MySQLVisualPlanNode;
 import cn.edu.neu.VisualPlan.PostgreSQL.PostgreSQLVisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
@@ -34,6 +35,9 @@ public class PrintHandler {
             RECTANGLE_HEIGHT = 160;
         } else if (root instanceof PostgreSQLVisualPlanNode){
             RECTANGLE_WIDTH = 350;
+            RECTANGLE_HEIGHT = 160;
+        } else if (root instanceof CalciteVisualPlanNode) {
+            RECTANGLE_WIDTH = 300;
             RECTANGLE_HEIGHT = 160;
         }
         Queue<VisualPlanNode> queue = new LinkedList<>();

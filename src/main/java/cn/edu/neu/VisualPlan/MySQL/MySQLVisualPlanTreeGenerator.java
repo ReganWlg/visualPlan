@@ -4,14 +4,11 @@ import cn.edu.neu.VisualPlan.MySQL.Analyzer.Analyzer;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGenerator;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,9 +24,26 @@ public final class MySQLVisualPlanTreeGenerator implements VisualPlanTreeGenerat
     }
 
     @Override
-    public VisualPlanNode getVisualPlanTree(Statement stmt, String sql) throws SQLException {
-        String planRawString = getPlanRawString(stmt, sql);
-        System.out.println(planRawString.toString());
+    public VisualPlanNode getVisualPlanTree(Connection conn, String sql) {
+        Statement stmt = null;
+        String planRawString = "";
+        // 获取执行 SQL 对象
+        try {
+            stmt = conn.createStatement();
+            planRawString = getPlanRawString(stmt, sql);
+            System.out.println(planRawString);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // 释放资源
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return convVisualPlanTree(planRawString);
     }
 

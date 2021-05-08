@@ -46,13 +46,19 @@
             </font>
         </Label>
         <Label fx:id="l_database" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
-        <Label text="User: " GridPane.rowIndex="5" GridPane.columnIndex="0">
+        <Label text="Schema: " GridPane.rowIndex="5" GridPane.columnIndex="0">
             <font>
                 <Font name="System Bold"/>
             </font>
         </Label>
-        <Label fx:id="l_user" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
-        <HBox alignment="CENTER" GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.columnSpan="2">
+        <Label fx:id="l_schema" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+        <Label text="User: " GridPane.rowIndex="6" GridPane.columnIndex="0">
+            <font>
+                <Font name="System Bold"/>
+            </font>
+        </Label>
+        <Label fx:id="l_user" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+        <HBox alignment="CENTER" GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.columnSpan="2">
             <Button text="断开当前数据库" onAction="#disconnect">
                 <font>
                     <Font name="System Bold"/>
@@ -60,33 +66,22 @@
             </Button>
         </HBox>
 
-        <Label text="SQL: " GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.columnSpan="2">
+        <Label text="SQL: " GridPane.rowIndex="8" GridPane.columnIndex="0" GridPane.columnSpan="2">
             <font>
                 <Font name="System Bold" size="18"/>
             </font>
         </Label>
-<!--        <TextArea fx:id="txt_sql"-->
-<!--                  text="SELECT C_CUSTKEY, C_NAME&#10;-->
-<!--FROM tpch.CUSTOMER C&#10;-->
-<!--WHERE NOT EXISTS (&#10;-->
-<!--    SELECT O.O_CUSTKEY&#10;-->
-<!--    FROM tpch.Orders O, tpch.Lineitem L, tpch.PartSupp PS, tpch.Part P&#10;-->
-<!--    WHERE C.C_CUSTKEY=O.O_CUSTKEY AND&#10;-->
-<!--            O.O_ORDERKEY=L.L_ORDERKEY AND&#10;-->
-<!--            L.L_PARTKEY=PS.PS_PARTKEY AND&#10;-->
-<!--            L.L_SUPPKEY= PS.PS_SUPPKEY AND&#10;-->
-<!--            PS.PS_PARTKEY=P.P_PARTKEY AND&#10;-->
-<!--            P.P_BRAND='Brand#13')&#10;-->
-<!--Limit 200;"-->
-<!--                   GridPane.rowIndex="8" GridPane.columnSpan="2" prefHeight="200"/>-->
-        <TextArea fx:id="txt_sql"
-                  text="Select P.P_NAME, P.P_mfgr,&#10;
-    P.P_RETAILPRICE, PS.PS_SUPPLYCOST&#10;
-From tpch.part P, tpch.partsupp PS&#10;
-Where P.P_RETAILPRICE>PS.PS_SUPPLYCOST&#10;
-Limit 200 "
-                  GridPane.rowIndex="8" GridPane.columnSpan="2" prefHeight="200"/>
-        <HBox alignment="CENTER" GridPane.rowIndex="9" GridPane.columnIndex="0" GridPane.columnSpan="2">
+        <TextArea fx:id="txt_sql" GridPane.rowIndex="9" GridPane.columnSpan="2" prefHeight="200"/>
+
+        <HBox alignment="CENTER" GridPane.rowIndex="10" GridPane.columnSpan="2">
+            <CheckBox fx:id="cb_calcite" text="使用Calcite优化器进行优化">
+                <font>
+                    <Font name="System Bold"/>
+                </font>
+            </CheckBox>
+        </HBox>
+
+        <HBox alignment="CENTER" GridPane.rowIndex="11" GridPane.columnIndex="0" GridPane.columnSpan="2">
             <Button text="查询执行计划" onAction="#queryExecutionPlan">
                 <font>
                     <Font name="System Bold"/>
@@ -94,18 +89,18 @@ Limit 200 "
             </Button>
         </HBox>
 
-        <Label text="Planning Time: " GridPane.rowIndex="10" GridPane.columnIndex="0">
+        <Label text="Planning Time: " GridPane.rowIndex="12" GridPane.columnIndex="0">
             <font>
                 <Font name="System Bold"/>
             </font>
         </Label>
-        <Label fx:id="l_planningTime" GridPane.rowIndex="10" GridPane.columnIndex="1"/>
-        <Label text="Execution Time: " GridPane.rowIndex="11" GridPane.columnIndex="0">
+        <Label fx:id="l_planningTime" GridPane.rowIndex="12" GridPane.columnIndex="1"/>
+        <Label text="Execution Time: " GridPane.rowIndex="13" GridPane.columnIndex="0">
             <font>
                 <Font name="System Bold"/>
             </font>
         </Label>
-        <Label fx:id="l_executionTime" GridPane.rowIndex="11" GridPane.columnIndex="1"/>
+        <Label fx:id="l_executionTime" GridPane.rowIndex="13" GridPane.columnIndex="1"/>
     </GridPane>
     <ScrollPane fx:id="scrollPane"
                 hbarPolicy="AS_NEEDED" vbarPolicy="ALWAYS"

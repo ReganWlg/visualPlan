@@ -33,13 +33,15 @@ public class ConnectDBControl implements Initializable {
     @FXML
     private TextField txt_database;
     @FXML
+    private TextField txt_schema;
+    @FXML
     private TextField txt_user;
     @FXML
     private PasswordField pwd_password;
 
     private Connection conn;
 
-    public String getDbms() {
+    public String getDBMS() {
         return cb_dbms.getValue();
     }
     public String getIp() {
@@ -51,8 +53,14 @@ public class ConnectDBControl implements Initializable {
     public String getDatabase() {
         return txt_database.getText();
     }
+    public String getSchema() {
+        return txt_schema.getText();
+    }
     public String getUser() {
         return txt_user.getText();
+    }
+    public String getPassword() {
+        return pwd_password.getText();
     }
     public Connection getConn() {
         return conn;
@@ -63,11 +71,32 @@ public class ConnectDBControl implements Initializable {
 
     }
 
+    public void changeDBMS(ActionEvent event) {
+        if (getDBMS().equals("mysql")) {
+            txt_ip.setText("localhost");
+            txt_port.setText("3306");
+            txt_database.setText("information_schema");
+            txt_schema.setText("");
+            txt_user.setText("root");
+            pwd_password.setText("123456");
+            txt_schema.setDisable(true);
+        } else {
+            txt_ip.setText("localhost");
+            txt_port.setText("5432");
+            txt_database.setText("tpc");
+            txt_schema.setText("tpch");
+            txt_user.setText("postgres");
+            pwd_password.setText("regan0429");
+            txt_schema.setDisable(false);
+        }
+    }
+
     // “重置”按钮
     public void clear(ActionEvent event) {
         txt_ip.setText("");
         txt_port.setText("");
         txt_database.setText("");
+        txt_schema.setText("");
         txt_user.setText("");
         pwd_password.setText("");
     }
@@ -75,22 +104,25 @@ public class ConnectDBControl implements Initializable {
     // “连接”按钮
     public void connect(ActionEvent event) throws Exception {
         
-        String database1 = txt_database.getText();
-        if (txt_ip.getText().equals("localhost") && cb_dbms.getValue().equals("mysql")) {
+        String database1 = getDatabase();
+        if (getIp().equals("localhost") && getDBMS().equals("mysql")) {
             database1 += "?useSSL=true&serverTimezone=UTC";
+        }
+        if (getDBMS().equals("postgresql") && getSchema() != null) {
+            database1 += "?currentSchema=" + getSchema();
         }
 
         String jdbcUrl = String.format(
                 "jdbc:%s://%s:%s/%s",
-                cb_dbms.getValue(),
-                txt_ip.getText(),
-                txt_port.getText(),
+                getDBMS(),
+                getIp(),
+                getPort(),
                 database1);
         try {
             conn = DriverManager.getConnection(
                     jdbcUrl,
-                    txt_user.getText(),
-                    pwd_password.getText());
+                    getUser(),
+                    getPassword());
 
             // 将当前窗口控制器保存到map中
             StageManager.CONTROLLER.put("ConnectDBControl", this);

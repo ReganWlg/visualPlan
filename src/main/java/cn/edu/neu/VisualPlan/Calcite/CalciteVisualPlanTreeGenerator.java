@@ -1,5 +1,9 @@
-package cn.edu.neu.Demo;
+package cn.edu.neu.VisualPlan.Calcite;
 
+import cn.edu.neu.Demo.Demo06;
+import cn.edu.neu.VisualPlan.Calcite.Analyzer.Analyzer;
+import cn.edu.neu.VisualPlan.VisualPlanNode;
+import cn.edu.neu.VisualPlan.VisualPlanTreeGenerator;
 import org.apache.calcite.adapter.enumerable.EnumerableConvention;
 import org.apache.calcite.adapter.enumerable.EnumerableRules;
 import org.apache.calcite.avatica.util.Casing;
@@ -8,7 +12,10 @@ import org.apache.calcite.config.CalciteConnectionProperty;
 import org.apache.calcite.jdbc.CalciteConnection;
 import org.apache.calcite.jdbc.CalciteSchema;
 import org.apache.calcite.jdbc.JavaTypeFactoryImpl;
-import org.apache.calcite.plan.*;
+import org.apache.calcite.plan.ConventionTraitDef;
+import org.apache.calcite.plan.RelOptCluster;
+import org.apache.calcite.plan.RelOptUtil;
+import org.apache.calcite.plan.RelTraitSet;
 import org.apache.calcite.plan.volcano.VolcanoPlanner;
 import org.apache.calcite.prepare.CalciteCatalogReader;
 import org.apache.calcite.rel.RelDistributionTraitDef;
@@ -16,7 +23,6 @@ import org.apache.calcite.rel.RelNode;
 import org.apache.calcite.rel.RelRoot;
 import org.apache.calcite.rel.rules.FilterJoinRule;
 import org.apache.calcite.rel.rules.PruneEmptyRules;
-import org.apache.calcite.rel.type.RelDataType;
 import org.apache.calcite.rel.type.RelDataTypeSystem;
 import org.apache.calcite.rex.RexBuilder;
 import org.apache.calcite.schema.SchemaPlus;
@@ -33,76 +39,28 @@ import org.apache.calcite.tools.Frameworks;
 import org.apache.calcite.tools.RelRunner;
 
 import java.sql.*;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
-public class Demo06 {
+public class CalciteVisualPlanTreeGenerator implements VisualPlanTreeGenerator {
+    private static VisualPlanTreeGenerator _instance = new CalciteVisualPlanTreeGenerator();
 
-    public static class ViewExpanderImpl implements RelOptTable.ViewExpander {
-        public ViewExpanderImpl() {
-        }
+    private CalciteVisualPlanTreeGenerator() {
 
-        @Override
-        public RelRoot expandView(RelDataType rowType, String queryString, List<String> schemaPath,
-                                  List<String> viewPath) {
-            return null;
-        }
     }
-    public static void main(String[] args) throws SQLException {
 
-        String dbms = "postgresql";
-        String ip = "localhost";
-        String port = "5432";
-        String database = "tpc";
-        String jdbcDriver = null;
-        String jdbcSchema = "tpch";
-        String jdbcUrl = String.format("jdbc:%s://%s:%s/%s", dbms, ip, port, database);
-        String jdbcUser = "postgres";
-        String jdbcPassword = "regan0429";
+    public static VisualPlanTreeGenerator getInstance() {
+        return _instance;
+    }
 
-//        String dbms = "mysql";
-//        String ip = "localhost";
-//        String port = "3306";
-//        String database = "information_schema?useSSL=true&serverTimezone=UTC";
-//        String jdbcDriver = null;
-//        String jdbcSchema = "information_schema";
-//        String jdbcUrl = String.format("jdbc:%s://%s:%s/%s", dbms, ip, port, database);
-//        String jdbcUser = "root";
-//        String jdbcPassword = "123456";
+    @Override
+    public VisualPlanNode getVisualPlanTree(Connection conn, String sql) throws SQLException {
+        String planRawString = getPlanRawString(conn, sql);
+        System.out.println(planRawString);
+        return convVisualPlanTree(planRawString);
+    }
 
-        if (dbms.equals("postgresql")) {
-            jdbcDriver = "org.postgresql.Driver";
-        } else if (dbms.equals("mysql")) {
-            jdbcDriver = "com.mysql.cj.jdbc.Driver";
-        }
-
-        Properties config = new Properties();
-        config.put("model",
-                "inline:" +
-                "{\n" +
-                "  version: '1.0',\n" +
-                "  defaultSchema: '" + jdbcSchema + "',\n" +
-                "  schemas: [\n" +
-                "    {\n" +
-                "      name: '" + jdbcSchema + "',\n" +
-                "      type: 'jdbc',\n" +
-                "      jdbcDriver: '" + jdbcDriver + "',\n" +
-                "      jdbcUrl: '" + jdbcUrl + "',\n" +
-                "      jdbcSchema: '" + jdbcSchema + "',\n" +
-                "      jdbcUser: '" + jdbcUser + "',\n" +
-                "      jdbcPassword: '" + jdbcPassword + "'\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}" );
-        config.put("lex", "MYSQL");
-        String sql = "Select p.p_name, p.p_mfgr," +
-                "p.p_retailprice, ps.ps_supplycost\n" +
-                "From part p, partsupp ps\n" +
-                "Where p.p_retailprice>ps.ps_supplycost\n" +
-                "Limit 200 ";
-//        String sql = "select * from VIEWS";
-
-        Connection connection = DriverManager.getConnection("jdbc:calcite:", config);
+    private String getPlanRawString(Connection connection, String sql) throws SQLException {
+        String planRawString = null;
         CalciteConnection calciteConnection = connection.unwrap(CalciteConnection.class);
         SchemaPlus mySchema = calciteConnection.getRootSchema().getSubSchema(connection.getSchema());
 
@@ -138,7 +96,7 @@ public class Demo06 {
             SqlParser parser = SqlParser.create(sql, SqlParser.Config.DEFAULT);
             SqlNode parsed = parser.parseStmt();
 
-            System.out.printf("%nThe SqlNode after parsed is:%n%n%s%n", parsed.toString());
+//            System.out.printf("%nThe SqlNode after parsed is:%n%n%s%n", parsed.toString());
 
             //这里需要注意大小写问题，否则表会无法找到
             Properties properties = new Properties();
@@ -158,7 +116,7 @@ public class Demo06 {
                     factory,
                     frameworkConfig.getSqlValidatorConfig());
             SqlNode validated = validator.validate(parsed);
-            System.out.printf("%nThe SqlNode after validated is:%n%n%s%n", validated.toString());
+//            System.out.printf("%nThe SqlNode after validated is:%n%n%s%n", validated.toString());
 
             final RexBuilder rexBuilder = new RexBuilder(factory);
             final RelOptCluster cluster = RelOptCluster.create(planner, rexBuilder);
@@ -168,12 +126,12 @@ public class Demo06 {
                     .withTrimUnusedFields(false);
 
             // SqlNode toRelNode
-            final SqlToRelConverter sqlToRelConverter = new SqlToRelConverter(new ViewExpanderImpl(),
+            final SqlToRelConverter sqlToRelConverter = new SqlToRelConverter(new Demo06.ViewExpanderImpl(),
                     validator, calciteCatalogReader, cluster, frameworkConfig.getConvertletTable(), sqlconfig);
             RelRoot root = sqlToRelConverter.convertQuery(validated, false, true);
 
             RelNode relNode = root.rel;
-            System.out.printf("%nThe relational expression string before optimized is:%n%n%s", RelOptUtil.toString(relNode));
+//            System.out.printf("%nThe relational expression string before optimized is:%n%n%s", RelOptUtil.toString(relNode));
 
             RelTraitSet desiredTraits =
                     relNode.getCluster().traitSet().replace(EnumerableConvention.INSTANCE);
@@ -181,8 +139,9 @@ public class Demo06 {
 
             planner.setRoot(relNode);
             relNode = planner.findBestExp();
-            System.out.printf("%nThe Best relational expression string:%n%n");
-            System.out.println(RelOptUtil.toString(relNode, SqlExplainLevel.ALL_ATTRIBUTES));
+//            System.out.printf("%nThe Best relational expression string:%n%n");
+            planRawString = RelOptUtil.toString(relNode, SqlExplainLevel.ALL_ATTRIBUTES);
+//            System.out.println(planRawString);
 
             long startTime = System.currentTimeMillis();
             RelRunner runner = connection.unwrap(RelRunner.class);
@@ -196,5 +155,59 @@ public class Demo06 {
         } catch (SQLException | SqlParseException e) {
             e.printStackTrace();
         }
+        return planRawString;
+    }
+
+    // public for debug, this function should be private.
+    public VisualPlanNode convVisualPlanTree(String planRawString) {
+        String[] nodeRawStrings = planRawString.split("\n");
+        Queue<LevelAndDescription> levelAndDescriptionQueue = new LinkedList<>();
+        for (String nodeRawString : nodeRawStrings) {
+            LevelAndDescription levelAndDescription = splitLevelAndDescription(nodeRawString);
+            levelAndDescriptionQueue.add(levelAndDescription);
+        }
+        return buildVisualPlanTree(levelAndDescriptionQueue);
+    }
+
+    private class LevelAndDescription {
+        private int _level;
+        private String _description;
+
+        public LevelAndDescription(int level, String description) {
+            _level = level;
+            _description = description;
+        }
+
+        public int getLevel() {
+            return _level;
+        }
+
+        public String getDescription() {
+            return _description;
+        }
+    };
+
+    private final int RECESS_LENGTH = 2;
+    private LevelAndDescription splitLevelAndDescription(String nodeRawString) {
+        String description = nodeRawString.trim();
+        int level = (nodeRawString.length() - description.length()) / RECESS_LENGTH;
+        return new LevelAndDescription(level, description);
+    }
+
+    // 先序遍历建树
+    private VisualPlanNode buildVisualPlanTree(Queue<LevelAndDescription> levelAndDescriptionQueue) {
+        if (levelAndDescriptionQueue.isEmpty()) {
+            return null;
+        }
+        LevelAndDescription rootLevelAndDescription = levelAndDescriptionQueue.remove();
+        int level = rootLevelAndDescription.getLevel();
+        String description = rootLevelAndDescription.getDescription();
+        Map<String, String> fieldMap = Analyzer.getInstance().getFieldMapByDescription(description);
+        List<VisualPlanNode> subNodeList = new ArrayList<>();
+        while (!levelAndDescriptionQueue.isEmpty() && levelAndDescriptionQueue.element().getLevel() == level + 1) {
+            VisualPlanNode subNode = buildVisualPlanTree(levelAndDescriptionQueue);
+            subNodeList.add(subNode);
+        }
+        return new CalciteVisualPlanNode(level, subNodeList, description, fieldMap);
     }
 }

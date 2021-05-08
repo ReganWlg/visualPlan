@@ -158,6 +158,11 @@ java 的通用 dbms 接口协议。
 2. 针对PostgreSQL需要显示的内容对结点的长宽进行了优化，与MySQL结点的长宽进行了区分。
    ![queries based on PostgreSQL 3](./Images/queries_based_on_PostgreSQL_3.png)
 
+## 5月8日更新
+
+1. 可以可视化Calcite优化后的查询执行计划
+   ![queries based on Calcite](./Images/queries_based_on_Calcite.png)
+
 # 8. 以后的任务
 
 ## 1月16日新增
@@ -183,4 +188,4 @@ java 的通用 dbms 接口协议。
 ## 4月26日新增
 
 1. 编写每一个PostgreSQL的operator的解析。（部分完成，没找到官方文档，在网上找的帖子中写的operator）
-2. 将MySQL和PostgreSQL的查询用Calcite进行优化，编写Calcite的后端解析部分。
+2. 将MySQL和PostgreSQL的查询用Calcite进行优化，编写Calcite的后端解析部分。（Jdbc部分完成，等待后续测试看是否要加Enumerable部分）

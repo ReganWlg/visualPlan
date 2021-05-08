@@ -26,12 +26,10 @@ public class Demo04 {
         try {
             // 获取数据库连接对象
             conn = DriverManager.getConnection(url, user, password);
-            // 获取执行 SQL 对象
-            stmt = conn.createStatement();
             // 获取执行计划可视化数据生成器对象
             VisualPlanTreeGenerator visualPlanTreeGenerator = VisualPlanTreeGeneratorFactory.create(dbms);
             // 获取执行计划可视化数据
-            VisualPlanNode root = visualPlanTreeGenerator.getVisualPlanTree(stmt, sql);
+            VisualPlanNode root = visualPlanTreeGenerator.getVisualPlanTree(conn, sql);
             System.out.println("levelOrder: ");
             PrintHandler printHandler = new PrintHandler();
             printHandler.draw(root);
@@ -39,13 +37,6 @@ public class Demo04 {
             e.printStackTrace();
         } finally {
             // 释放资源
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
             if (conn != null) {
                 try {
                     conn.close();
