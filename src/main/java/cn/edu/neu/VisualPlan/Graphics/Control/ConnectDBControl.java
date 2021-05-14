@@ -1,6 +1,9 @@
 package cn.edu.neu.VisualPlan.Graphics.Control;
 
+import cn.edu.neu.VisualPlan.Graphics.Util.DialogBuilder;
 import cn.edu.neu.VisualPlan.Graphics.Util.StageManager;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -25,7 +28,7 @@ import java.util.ResourceBundle;
 
 public class ConnectDBControl implements Initializable {
     @FXML
-    private ComboBox<String> cb_dbms;
+    private JFXComboBox<String> cb_dbms;
     @FXML
     private TextField txt_ip;
     @FXML
@@ -38,6 +41,8 @@ public class ConnectDBControl implements Initializable {
     private TextField txt_user;
     @FXML
     private PasswordField pwd_password;
+    @FXML
+    private JFXButton connectDBMS;
 
     private Connection conn;
 
@@ -158,33 +163,38 @@ public class ConnectDBControl implements Initializable {
             StageManager.STAGE.put("MainStage", stage);
         } catch (SQLException e) {
             // 弹出错误提示框
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("错误提示");
-            alert.setHeaderText("数据库连接失败!");
-            alert.setContentText("请检查参数，重新连接");
-
-            // 将异常轨迹存入缓冲区
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-
-            // 在弹窗中添加扩展区域，用于显示异常轨迹
-            Label label = new Label("Exception stacktrace:");
-            TextArea textArea = new TextArea(sw.toString());
-            textArea.setEditable(false);
-            textArea.setWrapText(true);
-            textArea.setMaxWidth(Double.MAX_VALUE);
-            textArea.setMaxHeight(Double.MAX_VALUE);
-            GridPane.setVgrow(textArea, Priority.ALWAYS);
-            GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-            GridPane expContent = new GridPane();
-            expContent.setMaxWidth(Double.MAX_VALUE);
-            expContent.add(label, 0, 0);
-            expContent.add(textArea, 0, 1);
-
-            alert.getDialogPane().setExpandableContent(expContent);
-            alert.showAndWait();
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("错误提示");
+//            alert.setHeaderText("数据库连接失败!");
+//            alert.setContentText("请检查参数，重新连接");
+//
+//            // 将异常轨迹存入缓冲区
+//            StringWriter sw = new StringWriter();
+//            PrintWriter pw = new PrintWriter(sw);
+//            e.printStackTrace(pw);
+//
+//            // 在弹窗中添加扩展区域，用于显示异常轨迹
+//            Label label = new Label("Exception stacktrace:");
+//            TextArea textArea = new TextArea(sw.toString());
+//            textArea.setEditable(false);
+//            textArea.setWrapText(true);
+//            textArea.setMaxWidth(Double.MAX_VALUE);
+//            textArea.setMaxHeight(Double.MAX_VALUE);
+//            GridPane.setVgrow(textArea, Priority.ALWAYS);
+//            GridPane.setHgrow(textArea, Priority.ALWAYS);
+//
+//            GridPane expContent = new GridPane();
+//            expContent.setMaxWidth(Double.MAX_VALUE);
+//            expContent.add(label, 0, 0);
+//            expContent.add(textArea, 0, 1);
+//
+//            alert.getDialogPane().setExpandableContent(expContent);
+//            alert.showAndWait();
+            new DialogBuilder(connectDBMS)
+                    .setTitle("数据库连接失败!")
+                    .setMessage("请检查参数，重新连接")
+                    .setPositiveBtn("确定")
+                    .create();
         }
     }
 }

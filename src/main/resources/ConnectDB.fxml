@@ -4,19 +4,20 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.text.Font?>
 <?import javafx.collections.FXCollections?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="cn.edu.neu.VisualPlan.Graphics.Control.ConnectDBControl"
+          stylesheets="@ConnectDB.css"
           prefHeight="400.0" prefWidth="600.0"
           alignment="CENTER" hgap="20" vgap="20">
-    <Label text="dbms: " GridPane.columnIndex="0" GridPane.rowIndex="0">
-        <font>
-            <Font name="System Bold"/>
-        </font>
-    </Label>
-    <ComboBox fx:id="cb_dbms" GridPane.columnIndex="1" GridPane.rowIndex="0" onAction="#changeDBMS">
+    <Label text="dbms: " styleClass="jfx-label"
+           GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <JFXComboBox fx:id="cb_dbms"
+                 GridPane.columnIndex="1" GridPane.rowIndex="0"
+                 onAction="#changeDBMS" styleClass="jfx-dialog">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="mysql"/>
@@ -26,68 +27,43 @@
         <value>
             <String fx:value="postgresql"/>
         </value>
-    </ComboBox>
+    </JFXComboBox>
 
-    <Label text="ip: " GridPane.columnIndex="0" GridPane.rowIndex="1">
-        <font>
-            <Font name="System Bold"/>
-        </font>
-    </Label>
-    <TextField fx:id="txt_ip" text="localhost"
+    <Label text="ip: " styleClass="jfx-label"
+           GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextField fx:id="txt_ip" text="localhost" styleClass="jfx-text"
                GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-    <Label text="port: " GridPane.columnIndex="0" GridPane.rowIndex="2">
-        <font>
-            <Font name="System Bold"/>
-        </font>
-    </Label>
-    <TextField fx:id="txt_port" text="5432"
+    <Label text="port: " styleClass="jfx-label"
+           GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <TextField fx:id="txt_port" text="5432" styleClass="jfx-text"
                GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-    <Label text="database: " GridPane.columnIndex="0" GridPane.rowIndex="3">
-        <font>
-            <Font name="System Bold"/>
-        </font>
-    </Label>
-    <TextField fx:id="txt_database" text="tpc"
+    <Label text="database: " styleClass="jfx-label"
+           GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+    <TextField fx:id="txt_database" text="tpc" styleClass="jfx-text"
                GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-    <Label text="schema: " GridPane.columnIndex="0" GridPane.rowIndex="4">
-        <font>
-            <Font name="System Bold"/>
-        </font>
-    </Label>
-    <TextField fx:id="txt_schema" text="tpch"
+    <Label text="schema: " styleClass="jfx-label"
+           GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+    <TextField fx:id="txt_schema" text="tpch" styleClass="jfx-text"
                GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-    <Label text="user: " GridPane.columnIndex="0" GridPane.rowIndex="5">
-        <font>
-            <Font name="System Bold"/>
-        </font>
-    </Label>
-    <TextField fx:id="txt_user" text="postgres"
+    <Label text="user: " styleClass="jfx-label"
+           GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+    <TextField fx:id="txt_user" text="postgres" styleClass="jfx-text"
                GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
-    <Label text="password: " GridPane.columnIndex="0" GridPane.rowIndex="6">
-        <font>
-            <Font name="System Bold"/>
-        </font>
-    </Label>
-    <PasswordField fx:id="pwd_password" text="regan0429"
+    <Label text="password: " styleClass="jfx-label"
+           GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+    <PasswordField fx:id="pwd_password" text="regan0429" styleClass="jfx-text"
                    GridPane.columnIndex="1" GridPane.rowIndex="6"/>
 
-    <Button text="重置"
-            GridPane.columnIndex="0" GridPane.rowIndex="7"
-            onAction="#clear">
-        <font>
-            <Font name="System Bold"/>
-        </font>
-    </Button>
+    <JFXButton text="重置"
+               GridPane.columnIndex="0" GridPane.rowIndex="7"
+               onAction="#clear" styleClass="jfx-button"/>
     <HBox GridPane.columnIndex="1" GridPane.rowIndex="7" alignment="CENTER_RIGHT">
-        <Button text="连接" onAction="#connect">
-            <font>
-                <Font name="System Bold"/>
-            </font>
-        </Button>
+        <JFXButton fx:id="connectDBMS" text="连接"
+                   onAction="#connect" styleClass="jfx-button"/>
     </HBox>
 </GridPane>

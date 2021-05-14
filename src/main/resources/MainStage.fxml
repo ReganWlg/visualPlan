@@ -1,69 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Text?>
 <?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.JFXButton?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="cn.edu.neu.VisualPlan.Graphics.Control.MainStageControl">
+      fx:controller="cn.edu.neu.VisualPlan.Graphics.Control.MainStageControl"
+      stylesheets="@MainStage.css">
     <GridPane fx:id="gridPane" hgap="20" vgap="20" minWidth="300">
         <padding>
             <Insets top="20" right="20" bottom="20" left="20"/>
         </padding>
 
-        <Label text="当前数据库连接状态：" GridPane.rowIndex="0" GridPane.columnSpan="2">
+        <Label text="当前数据库连接状态："
+               GridPane.rowIndex="0" GridPane.columnSpan="2">
             <font>
                 <Font name="System Bold" size="18"/>
             </font>
         </Label>
-        <Label text="DBMS: " GridPane.rowIndex="1" GridPane.columnIndex="0">
-            <font>
-                <Font name="System Bold"/>
-            </font>
-        </Label>
-        <Label fx:id="l_dbms" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-        <Label text="IP: " GridPane.rowIndex="2" GridPane.columnIndex="0">
-            <font>
-                <Font name="System Bold"/>
-            </font>
-        </Label>
-        <Label fx:id="l_ip" GridPane.rowIndex="2" GridPane.columnIndex="1" />
-        <Label text="Port: " GridPane.rowIndex="3" GridPane.columnIndex="0">
-            <font>
-                <Font name="System Bold"/>
-            </font>
-        </Label>
-        <Label fx:id="l_port" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
-        <Label text="Database: " GridPane.rowIndex="4" GridPane.columnIndex="0">
-            <font>
-                <Font name="System Bold"/>
-            </font>
-        </Label>
-        <Label fx:id="l_database" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
-        <Label text="Schema: " GridPane.rowIndex="5" GridPane.columnIndex="0">
-            <font>
-                <Font name="System Bold"/>
-            </font>
-        </Label>
-        <Label fx:id="l_schema" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
-        <Label text="User: " GridPane.rowIndex="6" GridPane.columnIndex="0">
-            <font>
-                <Font name="System Bold"/>
-            </font>
-        </Label>
-        <Label fx:id="l_user" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+        <Label text="DBMS: " styleClass="jfx-titleLabel"
+               GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <Label fx:id="l_dbms" styleClass="jfx-contentLabel"
+               GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="IP: " styleClass="jfx-titleLabel"
+               GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <Label fx:id="l_ip" styleClass="jfx-contentLabel"
+               GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+        <Label text="Port: " styleClass="jfx-titleLabel"
+               GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <Label fx:id="l_port" styleClass="jfx-contentLabel"
+               GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <Label text="Database: " styleClass="jfx-titleLabel"
+               GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <Label fx:id="l_database" styleClass="jfx-contentLabel"
+               GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+        <Label text="Schema: " styleClass="jfx-titleLabel"
+               GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <Label fx:id="l_schema" styleClass="jfx-contentLabel"
+               GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+        <Label text="User: " styleClass="jfx-titleLabel"
+               GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+        <Label fx:id="l_user" styleClass="jfx-contentLabel"
+               GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
         <HBox alignment="CENTER" GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.columnSpan="2">
-            <Button text="断开当前数据库" onAction="#disconnect">
+            <JFXButton fx:id="btn_disconnectDBMS" text="断开当前数据库"
+                       onAction="#disconnect" styleClass="jfx-button">
                 <font>
                     <Font name="System Bold"/>
                 </font>
-            </Button>
+            </JFXButton>
         </HBox>
 
         <Label text="SQL: " GridPane.rowIndex="8" GridPane.columnIndex="0" GridPane.columnSpan="2">
@@ -82,25 +76,22 @@
         </HBox>
 
         <HBox alignment="CENTER" GridPane.rowIndex="11" GridPane.columnIndex="0" GridPane.columnSpan="2">
-            <Button text="查询执行计划" onAction="#queryExecutionPlan">
+            <JFXButton fx:id="btn_query" text="查询执行计划" onAction="#queryExecutionPlan" styleClass="jfx-button">
                 <font>
                     <Font name="System Bold"/>
                 </font>
-            </Button>
+            </JFXButton>
         </HBox>
 
-        <Label text="Planning Time: " GridPane.rowIndex="12" GridPane.columnIndex="0">
-            <font>
-                <Font name="System Bold"/>
-            </font>
-        </Label>
-        <Label fx:id="l_planningTime" GridPane.rowIndex="12" GridPane.columnIndex="1"/>
-        <Label text="Execution Time: " GridPane.rowIndex="13" GridPane.columnIndex="0">
-            <font>
-                <Font name="System Bold"/>
-            </font>
-        </Label>
-        <Label fx:id="l_executionTime" GridPane.rowIndex="13" GridPane.columnIndex="1"/>
+        <Label text="Planning Time: " styleClass="jfx-titleLabel"
+               GridPane.rowIndex="12" GridPane.columnIndex="0"/>
+        <Label fx:id="l_planningTime" styleClass="jfx-contentLabel"
+               GridPane.rowIndex="12" GridPane.columnIndex="1"/>
+
+        <Label text="Execution Time: " styleClass="jfx-titleLabel"
+               GridPane.rowIndex="13" GridPane.columnIndex="0"/>
+        <Label fx:id="l_executionTime" styleClass="jfx-contentLabel"
+               GridPane.rowIndex="13" GridPane.columnIndex="1"/>
     </GridPane>
     <ScrollPane fx:id="scrollPane"
                 hbarPolicy="AS_NEEDED" vbarPolicy="ALWAYS"
@@ -108,7 +99,7 @@
         <HBox alignment="CENTER">
             <Label text="当前没有查询执行计划">
                 <font>
-                    <Font size="20"/>
+                    <Font size="22"/>
                 </font>
             </Label>
         </HBox>

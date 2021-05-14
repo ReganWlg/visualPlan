@@ -163,6 +163,15 @@ java 的通用 dbms 接口协议。
 1. 可以可视化Calcite优化后的查询执行计划
    ![queries based on Calcite](./Images/queries_based_on_Calcite.png)
 
+## 5月14日更新
+
+1. 使用JFoenix优化Button、Combox、Dialog等控件的显示效果；
+2. 对部分控件使用css样式进行修饰
+   ![optimize the display based on JFoenix and css 1](./Images/optimize_the_display_based_on_JFoenix_and_css_1.png)
+   ![optimize the display based on JFoenix and css 2](./Images/optimize_the_display_based_on_JFoenix_and_css_2.png)
+3. 基于JFoenix新增一个工具类DialogBuilder用于快速构建弹框；
+   ![new class to quickly build dialog](./Images/new_class_to_quickly_build_dialog.png)
+
 # 8. 以后的任务
 
 ## 1月16日新增

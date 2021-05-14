@@ -1,11 +1,13 @@
 package cn.edu.neu.VisualPlan.Graphics.Control;
 
+import cn.edu.neu.VisualPlan.Graphics.Util.DialogBuilder;
 import cn.edu.neu.VisualPlan.Graphics.Util.PrintHandler;
 import cn.edu.neu.VisualPlan.Graphics.Util.StageManager;
 import cn.edu.neu.VisualPlan.PostgreSQL.PostgreSQLVisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGenerator;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGeneratorFactory;
+import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,8 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -45,9 +45,13 @@ public class MainStageControl implements Initializable {
     @FXML
     private Label l_user;
     @FXML
+    private JFXButton btn_disconnectDBMS;
+    @FXML
     private TextArea txt_sql;
     @FXML
     private CheckBox cb_calcite;
+    @FXML
+    private JFXButton btn_query;
     @FXML
     private Label l_planningTime;
     @FXML
@@ -97,29 +101,32 @@ public class MainStageControl implements Initializable {
 
     // 断开当前数据库连接
     public void disconnect(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("确认提示框");
-        alert.setHeaderText("是否确认断开当前数据库？");
-        alert.setContentText("确认断开将返回连接数据库界面");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            // 关闭当前主界面
-            StageManager.STAGE.get("MainStage").close();
-            // 删除map中主界面的引用
-            StageManager.STAGE.remove("MainStage");
-            StageManager.CONTROLLER.remove("MainStageControl");
-            // 释放资源
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            // 打开连接数据库界面
-            Stage stage = StageManager.STAGE.get("ConnectDB");
-            stage.show();
-        }
+        new DialogBuilder(btn_disconnectDBMS)
+                .setTitle("是否确认断开当前数据库？")
+                .setMessage("确认断开将返回连接数据库界面")
+                .setNegativeBtn("取消")
+                .setPositiveBtn("确定", new DialogBuilder.OnClickListener() {
+                    @Override
+                    public void onClick() {
+                        // 关闭当前主界面
+                        StageManager.STAGE.get("MainStage").close();
+                        // 删除map中主界面的引用
+                        StageManager.STAGE.remove("MainStage");
+                        StageManager.CONTROLLER.remove("MainStageControl");
+                        // 释放资源
+                        if (conn != null) {
+                            try {
+                                conn.close();
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        // 打开连接数据库界面
+                        Stage stage = StageManager.STAGE.get("ConnectDB");
+                        stage.show();
+                    }
+                })
+                .create();
     }
 
     // 查询当前SQL的执行计划
@@ -195,33 +202,38 @@ public class MainStageControl implements Initializable {
             scrollPane.setContent(printHandler.getRoot());
         } catch (SQLException e) {
             // 弹出错误提示框
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("错误提示");
-            alert.setHeaderText("查询失败!");
-            alert.setContentText("请检查SQL语句，重新查询");
-
-            // 将异常轨迹存入缓冲区
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-
-            // 在弹窗中添加扩展区域，用于显示异常轨迹
-            Label label = new Label("Exception stacktrace:");
-            TextArea textArea = new TextArea(sw.toString());
-            textArea.setEditable(false);
-            textArea.setWrapText(true);
-            textArea.setMaxWidth(Double.MAX_VALUE);
-            textArea.setMaxHeight(Double.MAX_VALUE);
-            GridPane.setVgrow(textArea, Priority.ALWAYS);
-            GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-            GridPane expContent = new GridPane();
-            expContent.setMaxWidth(Double.MAX_VALUE);
-            expContent.add(label, 0, 0);
-            expContent.add(textArea, 0, 1);
-
-            alert.getDialogPane().setExpandableContent(expContent);
-            alert.showAndWait();
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("错误提示");
+//            alert.setHeaderText("查询失败!");
+//            alert.setContentText("请检查SQL语句，重新查询");
+//
+//            // 将异常轨迹存入缓冲区
+//            StringWriter sw = new StringWriter();
+//            PrintWriter pw = new PrintWriter(sw);
+//            e.printStackTrace(pw);
+//
+//            // 在弹窗中添加扩展区域，用于显示异常轨迹
+//            Label label = new Label("Exception stacktrace:");
+//            TextArea textArea = new TextArea(sw.toString());
+//            textArea.setEditable(false);
+//            textArea.setWrapText(true);
+//            textArea.setMaxWidth(Double.MAX_VALUE);
+//            textArea.setMaxHeight(Double.MAX_VALUE);
+//            GridPane.setVgrow(textArea, Priority.ALWAYS);
+//            GridPane.setHgrow(textArea, Priority.ALWAYS);
+//
+//            GridPane expContent = new GridPane();
+//            expContent.setMaxWidth(Double.MAX_VALUE);
+//            expContent.add(label, 0, 0);
+//            expContent.add(textArea, 0, 1);
+//
+//            alert.getDialogPane().setExpandableContent(expContent);
+//            alert.showAndWait();
+            new DialogBuilder(btn_query)
+                    .setTitle("查询失败!")
+                    .setMessage("请检查SQL语句，重新查询")
+                    .setPositiveBtn("确定")
+                    .create();
         }
     }
 }
