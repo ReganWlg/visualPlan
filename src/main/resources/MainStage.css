@@ -13,3 +13,15 @@
 .jfx-contentLabel {
     -fx-font-size: 14px;
 }
+.jfx-toggle-button {
+    -jfx-toggle-color: #DC143C;
+    -jfx-untoggle-color: #FAFAFA;
+    -jfx-toggle-line-color: #FFC0CB;
+    -jfx-untoggle-line-color: #999999;
+    -jfx-disable-visual-focus: false;
+    -fx-font-size: 14px;
+}
+.jfx-radio-button {
+    -jfx-selected-color: #DC143C;
+    -fx-font-size: 14px;
+}

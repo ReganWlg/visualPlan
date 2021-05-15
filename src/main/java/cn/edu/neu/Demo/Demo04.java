@@ -32,7 +32,7 @@ public class Demo04 {
             VisualPlanNode root = visualPlanTreeGenerator.getVisualPlanTree(conn, sql);
             System.out.println("levelOrder: ");
             PrintHandler printHandler = new PrintHandler();
-            printHandler.draw(root);
+            printHandler.draw(root, 0);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

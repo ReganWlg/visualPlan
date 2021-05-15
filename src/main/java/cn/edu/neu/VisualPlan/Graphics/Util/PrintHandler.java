@@ -29,38 +29,45 @@ public class PrintHandler {
         return _root;
     }
 
-    public final void draw(VisualPlanNode root) {
-        if (root instanceof MySQLVisualPlanNode) {
-            RECTANGLE_WIDTH = 300;
-            RECTANGLE_HEIGHT = 160;
-        } else if (root instanceof PostgreSQLVisualPlanNode){
-            RECTANGLE_WIDTH = 350;
-            RECTANGLE_HEIGHT = 160;
-        } else if (root instanceof CalciteVisualPlanNode) {
-            RECTANGLE_WIDTH = 300;
-            RECTANGLE_HEIGHT = 160;
+    public final void draw(VisualPlanNode root, int mode) {
+        if (mode == 0) {
+            RECTANGLE_WIDTH = 150;
+            RECTANGLE_HEIGHT = 50;
         }
+        else if (mode == 1) {
+            if (root instanceof MySQLVisualPlanNode) {
+                RECTANGLE_WIDTH = 300;
+                RECTANGLE_HEIGHT = 160;
+            } else if (root instanceof PostgreSQLVisualPlanNode){
+                RECTANGLE_WIDTH = 350;
+                RECTANGLE_HEIGHT = 160;
+            } else if (root instanceof CalciteVisualPlanNode) {
+                RECTANGLE_WIDTH = 300;
+                RECTANGLE_HEIGHT = 160;
+            }
+        }
+
         Queue<VisualPlanNode> queue = new LinkedList<>();
         int levelIndex = 0;
         root.setLevelIndex(levelIndex++);
         queue.add(root);
         while (!queue.isEmpty()) {
             VisualPlanNode node = queue.remove();
-            drawNode(node);
+            drawNode(node, mode);
             for (VisualPlanNode subNode : node.getSubNodeList()) {
                 subNode.setLevelIndex(levelIndex++);
                 queue.add(subNode);
             }
         }
-        drawLine(root);
+        drawLine();
     }
 
-    public void drawNode(VisualPlanNode node) {
+    public void drawNode(VisualPlanNode node, int mode) {
         System.out.println(node.toString());
 
         // 添加第一个结点
         if (node.getLevel() == 0) {
-            RectangleField rectangleField = node.createRectangleField();
+            RectangleField rectangleField = node.createRectangleField(mode);
             rectangleField.setLayoutX(40);
             rectangleField.setLayoutY(40);
             _root.getChildren().add(rectangleField);
@@ -70,7 +77,7 @@ public class PrintHandler {
 
         // 在当前层添加结点
         if (node.getLevel() == currentLevel) {
-            RectangleField rectangleField = node.createRectangleField();
+            RectangleField rectangleField = node.createRectangleField(mode);
             RectangleField lastNode = (RectangleField) _root.getChildren().get(childrenNum - 1);
 
             // 若即将加入的结点与上一个结点的parent是同一个
@@ -133,7 +140,7 @@ public class PrintHandler {
         // 遍历到下一层了，在新层添加第一个结点
         else {
             currentLevel++;
-            RectangleField rectangleField = new RectangleField(node);
+            RectangleField rectangleField = new RectangleField(node, mode);
             int parentLevelIndex = node.getParentNode().getLevelIndex();
             double parentLayoutX = _root.getChildren().get(parentLevelIndex).getLayoutX();
             double parentLayoutY = _root.getChildren().get(parentLevelIndex).getLayoutY();
@@ -196,7 +203,7 @@ public class PrintHandler {
     }
 
     // 所有结点位置均调整完，开始画结点之间的线
-    public void drawLine(VisualPlanNode node) {
+    public void drawLine() {
         for (int i = 0; i < childrenNum; i++) {
             RectangleField parent = (RectangleField) _root.getChildren().get(i);
             double parentX = parent.getLayoutX() + RECTANGLE_WIDTH / 2;

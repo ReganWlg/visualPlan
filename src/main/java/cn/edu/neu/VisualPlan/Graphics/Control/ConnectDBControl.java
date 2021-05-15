@@ -4,6 +4,8 @@ import cn.edu.neu.VisualPlan.Graphics.Util.DialogBuilder;
 import cn.edu.neu.VisualPlan.Graphics.Util.StageManager;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,7 +17,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 import java.io.PrintWriter;
@@ -30,17 +31,17 @@ public class ConnectDBControl implements Initializable {
     @FXML
     private JFXComboBox<String> cb_dbms;
     @FXML
-    private TextField txt_ip;
+    private JFXTextField txt_ip;
     @FXML
-    private TextField txt_port;
+    private JFXTextField txt_port;
     @FXML
-    private TextField txt_database;
+    private JFXTextField txt_database;
     @FXML
-    private TextField txt_schema;
+    private JFXTextField txt_schema;
     @FXML
-    private TextField txt_user;
+    private JFXTextField txt_user;
     @FXML
-    private PasswordField pwd_password;
+    private JFXPasswordField pwd_password;
     @FXML
     private JFXButton connectDBMS;
 

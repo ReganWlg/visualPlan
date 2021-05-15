@@ -41,8 +41,8 @@ public abstract class VisualPlanNode {
         _levelIndex = levelIndex;
     }
 
-    public RectangleField createRectangleField() {
-        return new RectangleField(this);
+    public RectangleField createRectangleField(int mode) {
+        return new RectangleField(this, mode);
     }
 
     public abstract String getFieldByKey(String key);

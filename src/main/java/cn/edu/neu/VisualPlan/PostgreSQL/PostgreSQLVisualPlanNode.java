@@ -39,8 +39,7 @@ public class PostgreSQLVisualPlanNode extends VisualPlanNode {
     }
 
     @Override
-    public RectangleField createRectangleField() {
-        RectangleField rectangleField = super.createRectangleField();
-        return rectangleField;
+    public RectangleField createRectangleField(int mode) {
+        return super.createRectangleField(mode);
     }
 }

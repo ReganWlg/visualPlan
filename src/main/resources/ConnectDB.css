@@ -6,7 +6,7 @@
     -fx-pref-width: 80;
     -fx-text-fill: WHITE;
 }
-.jfx-dialog {
+.jfx-comboBox {
     -fx-pref-width: 160;
     -fx-font-size: 14px;
 }

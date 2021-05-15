@@ -22,7 +22,7 @@ public class Demo02 {
         VisualPlanNode root = mySQLVisualPlanTreeGenerator.convVisualPlanTree(planRawString);
         System.out.println("levelOrder: ");
         PrintHandler printHandler = new PrintHandler();
-        printHandler.draw(root);
+        printHandler.draw(root, 0);
         // UI与控制层分离后，此部分不再使用，使用Demo03模式
         // Application.launch(MainStage.class, args);
     }

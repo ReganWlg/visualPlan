@@ -20,15 +20,17 @@ public class Analyzer {
     }
 
     private Pattern _CostPattern = Pattern.compile(
-            "(.*): rowcount = (.*), cumulative cost = [{](.*)[}], id = (.*)");
+            "(.*): rowcount = (.*), cumulative cost = [{](.*) rows, (.*) cpu, (.*) io[}], id = (.*)");
     public Map<String, String> getFieldMapByDescription(String description) {
         Map<String, String> fieldMap = new HashMap<>();
 
         Matcher costMatcher = _CostPattern.matcher(description);
         if (costMatcher.find()) {
             fieldMap.put("rowCount", costMatcher.group(2));
-            fieldMap.put("cumulativeCost", costMatcher.group(3));
-            fieldMap.put("id", costMatcher.group(4));
+            fieldMap.put("rows", costMatcher.group(3));
+            fieldMap.put("cpu", costMatcher.group(4));
+            fieldMap.put("io", costMatcher.group(5));
+            fieldMap.put("id", costMatcher.group(6));
             description = costMatcher.group(1);
         }
 

@@ -8,13 +8,14 @@ import cn.edu.neu.VisualPlan.VisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGenerator;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGeneratorFactory;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXToggleButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -24,8 +25,6 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -47,9 +46,13 @@ public class MainStageControl implements Initializable {
     @FXML
     private JFXButton btn_disconnectDBMS;
     @FXML
-    private TextArea txt_sql;
+    private JFXTextArea txt_sql;
     @FXML
-    private CheckBox cb_calcite;
+    private JFXRadioButton btn_mode0;
+    @FXML
+    private JFXRadioButton btn_mode1;
+    @FXML
+    private JFXToggleButton btn_calcite;
     @FXML
     private JFXButton btn_query;
     @FXML
@@ -58,6 +61,9 @@ public class MainStageControl implements Initializable {
     private Label l_executionTime;
 
     private Connection conn;
+    private VisualPlanNode root;
+    private boolean haveQuery;
+    private int displayMode;
 
     // MainStage初始化
     @Override
@@ -96,6 +102,8 @@ public class MainStageControl implements Initializable {
             txt_sql.setText("select * from views");
         }
 
+        haveQuery = false;
+        displayMode = 0;
         StageManager.CONTROLLER.put("MainStageControl", this);
     }
 
@@ -105,89 +113,121 @@ public class MainStageControl implements Initializable {
                 .setTitle("是否确认断开当前数据库？")
                 .setMessage("确认断开将返回连接数据库界面")
                 .setNegativeBtn("取消")
-                .setPositiveBtn("确定", new DialogBuilder.OnClickListener() {
-                    @Override
-                    public void onClick() {
-                        // 关闭当前主界面
-                        StageManager.STAGE.get("MainStage").close();
-                        // 删除map中主界面的引用
-                        StageManager.STAGE.remove("MainStage");
-                        StageManager.CONTROLLER.remove("MainStageControl");
-                        // 释放资源
-                        if (conn != null) {
-                            try {
-                                conn.close();
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
+                .setPositiveBtn("确定", () -> {
+                    // 关闭当前主界面
+                    StageManager.STAGE.get("MainStage").close();
+                    // 删除map中主界面的引用
+                    StageManager.STAGE.remove("MainStage");
+                    StageManager.CONTROLLER.remove("MainStageControl");
+                    // 释放资源
+                    if (conn != null) {
+                        try {
+                            conn.close();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
                         }
-                        // 打开连接数据库界面
-                        Stage stage = StageManager.STAGE.get("ConnectDB");
-                        stage.show();
                     }
+                    // 打开连接数据库界面
+                    Stage stage = StageManager.STAGE.get("ConnectDB");
+                    stage.show();
                 })
                 .create();
+    }
+
+    // 选中缩略模式
+    public void changeToMode0(ActionEvent event) {
+        if (haveQuery && displayMode == 1) {
+            displayMode = 0;
+            PrintHandler printHandler = new PrintHandler();
+            printHandler.draw(root, displayMode);
+            scrollPane.setContent(printHandler.getRoot());
+        }
+    }
+
+    // 选中详细模式
+    public void changeToMode1(ActionEvent event) {
+        if (haveQuery && displayMode == 0) {
+            displayMode = 1;
+            PrintHandler printHandler = new PrintHandler();
+            printHandler.draw(root, displayMode);
+            scrollPane.setContent(printHandler.getRoot());
+        }
     }
 
     // 查询当前SQL的执行计划
     public void queryExecutionPlan(ActionEvent event) {
         ConnectDBControl connectDBControl = (ConnectDBControl) StageManager.CONTROLLER.get("ConnectDBControl");
-        try {
-            String dbms = l_dbms.getText();
-            if (cb_calcite.isSelected()) {
-                dbms += "_calcite";
+        // 当前的模式
+        if (btn_mode0.isSelected()) {
+            displayMode = 0;
+        } else if (btn_mode1.isSelected()) {
+            displayMode = 1;
+        }
 
-                String ip = connectDBControl.getIp();
-                String port = connectDBControl.getPort();
-                String database = connectDBControl.getDatabase();
-                String jdbcDriver = null;
-                if (l_dbms.getText().equals("postgresql")) {
-                    jdbcDriver = "org.postgresql.Driver";
-                } else if (l_dbms.getText().equals("mysql")) {
-                    jdbcDriver = "com.mysql.cj.jdbc.Driver";
-                }
-                String jdbcSchema = null;
-                if (connectDBControl.getSchema().equals("")) {
-                    jdbcSchema = connectDBControl.getDatabase();
-                } else {
-                    jdbcSchema = connectDBControl.getSchema();
-                }
-                String jdbcUrl = String.format("jdbc:%s://%s:%s/%s",
-                        l_dbms.getText(), ip, port, database);
-                String jdbcUser = connectDBControl.getUser();
-                String jdbcPassword = connectDBControl.getPassword();
+        String dbms = l_dbms.getText();
+        // 使用Calcite进行优化
+        if (btn_calcite.isSelected()) {
+            dbms += "_calcite";
 
-                Properties config = new Properties();
-                config.put("model",
-                        "inline:" +
-                        "{\n" +
-                        "  version: '1.0',\n" +
-                        "  defaultSchema: '" + jdbcSchema + "',\n" +
-                        "  schemas: [\n" +
-                        "    {\n" +
-                        "      name: '" + jdbcSchema + "',\n" +
-                        "      type: 'jdbc',\n" +
-                        "      jdbcDriver: '" + jdbcDriver + "',\n" +
-                        "      jdbcUrl: '" + jdbcUrl + "',\n" +
-                        "      jdbcSchema: '" + jdbcSchema + "',\n" +
-                        "      jdbcUser: '" + jdbcUser + "',\n" +
-                        "      jdbcPassword: '" + jdbcPassword + "'\n" +
-                        "    }\n" +
-                        "  ]\n" +
-                        "}" );
-                config.put("lex", "MYSQL");
-                // 获取执行 SQL 对象
-                conn = DriverManager.getConnection("jdbc:calcite:", config);
-
+            String ip = connectDBControl.getIp();
+            String port = connectDBControl.getPort();
+            String database = connectDBControl.getDatabase();
+            String jdbcDriver = null;
+            if (l_dbms.getText().equals("postgresql")) {
+                jdbcDriver = "org.postgresql.Driver";
+            } else if (l_dbms.getText().equals("mysql")) {
+                jdbcDriver = "com.mysql.cj.jdbc.Driver";
+            }
+            String jdbcSchema = null;
+            if (connectDBControl.getSchema().equals("")) {
+                jdbcSchema = connectDBControl.getDatabase();
             } else {
-                // 获取执行 SQL 对象
-                conn = connectDBControl.getConn();
+                jdbcSchema = connectDBControl.getSchema();
+            }
+            String jdbcUrl = String.format("jdbc:%s://%s:%s/%s",
+                    l_dbms.getText(), ip, port, database);
+            String jdbcUser = connectDBControl.getUser();
+            String jdbcPassword = connectDBControl.getPassword();
+
+            // 配置Calcite连接信息
+            Properties config = new Properties();
+            config.put("model",
+                    "inline:" +
+                    "{\n" +
+                    "  version: '1.0',\n" +
+                    "  defaultSchema: '" + jdbcSchema + "',\n" +
+                    "  schemas: [\n" +
+                    "    {\n" +
+                    "      name: '" + jdbcSchema + "',\n" +
+                    "      type: 'jdbc',\n" +
+                    "      jdbcDriver: '" + jdbcDriver + "',\n" +
+                    "      jdbcUrl: '" + jdbcUrl + "',\n" +
+                    "      jdbcSchema: '" + jdbcSchema + "',\n" +
+                    "      jdbcUser: '" + jdbcUser + "',\n" +
+                    "      jdbcPassword: '" + jdbcPassword + "'\n" +
+                    "    }\n" +
+                    "  ]\n" +
+                    "}" );
+            config.put("lex", "MYSQL");
+            // 获取执行 SQL 对象
+            try {
+                conn = DriverManager.getConnection("jdbc:calcite:", config);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
 
+        }
+        // 不使用calcite进行优化
+        else {
+            // 获取执行 SQL 对象
+            conn = connectDBControl.getConn();
+        }
+
+        try {
             // 获取执行计划可视化数据生成器对象
             VisualPlanTreeGenerator visualPlanTreeGenerator = VisualPlanTreeGeneratorFactory.create(dbms);
             // 获取执行计划可视化数据
-            VisualPlanNode root = visualPlanTreeGenerator.getVisualPlanTree(conn, txt_sql.getText());
+            root = visualPlanTreeGenerator.getVisualPlanTree(conn, txt_sql.getText());
             System.out.println("levelOrder: ");
             PrintHandler printHandler = new PrintHandler();
 
@@ -198,8 +238,9 @@ public class MainStageControl implements Initializable {
                 l_executionTime.setTextFill(Paint.valueOf("FF0000"));
             }
 
-            printHandler.draw(root);
+            printHandler.draw(root, displayMode);
             scrollPane.setContent(printHandler.getRoot());
+            haveQuery = true;
         } catch (SQLException e) {
             // 弹出错误提示框
 //            Alert alert = new Alert(Alert.AlertType.ERROR);

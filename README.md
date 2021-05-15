@@ -166,11 +166,20 @@ java 的通用 dbms 接口协议。
 ## 5月14日更新
 
 1. 使用JFoenix优化Button、Combox、Dialog等控件的显示效果；
-2. 对部分控件使用css样式进行修饰
+2. 对部分控件使用css样式进行修饰；
    ![optimize the display based on JFoenix and css 1](./Images/optimize_the_display_based_on_JFoenix_and_css_1.png)
    ![optimize the display based on JFoenix and css 2](./Images/optimize_the_display_based_on_JFoenix_and_css_2.png)
-3. 基于JFoenix新增一个工具类DialogBuilder用于快速构建弹框；
+3. 基于JFoenix新增一个工具类DialogBuilder用于快速构建弹框。
    ![new class to quickly build dialog](./Images/new_class_to_quickly_build_dialog.png)
+
+## 5月15日更新
+
+1. 进一步使用JFoenix控件优化界面显示效果；
+   ![optimize the display based on JFoenix and css 3](./Images/optimize_the_display_based_on_JFoenix_and_css_3.png)
+2. 新增切换“缩略模式”和“详细模式”的功能；
+   ![thumbnail mode](./Images/thumbnail_mode.png)
+3. 优化Calcite查询的显示效果。
+   ![optimize the display of calcite visual plan tree](./Images/optimize_the_display_of_calcite_visual_plan_tree.png)
 
 # 8. 以后的任务
 

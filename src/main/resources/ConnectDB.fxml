@@ -7,6 +7,8 @@
 <?import javafx.collections.FXCollections?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="cn.edu.neu.VisualPlan.Graphics.Control.ConnectDBControl"
@@ -17,7 +19,7 @@
            GridPane.columnIndex="0" GridPane.rowIndex="0"/>
     <JFXComboBox fx:id="cb_dbms"
                  GridPane.columnIndex="1" GridPane.rowIndex="0"
-                 onAction="#changeDBMS" styleClass="jfx-dialog">
+                 onAction="#changeDBMS" styleClass="jfx-comboBox">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="mysql"/>
@@ -31,33 +33,33 @@
 
     <Label text="ip: " styleClass="jfx-label"
            GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <TextField fx:id="txt_ip" text="localhost" styleClass="jfx-text"
-               GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <JFXTextField fx:id="txt_ip" text="localhost" styleClass="jfx-text"
+                  GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
     <Label text="port: " styleClass="jfx-label"
            GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-    <TextField fx:id="txt_port" text="5432" styleClass="jfx-text"
-               GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <JFXTextField fx:id="txt_port" text="5432" styleClass="jfx-text"
+                  GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
     <Label text="database: " styleClass="jfx-label"
            GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-    <TextField fx:id="txt_database" text="tpc" styleClass="jfx-text"
+    <JFXTextField fx:id="txt_database" text="tpc" styleClass="jfx-text"
                GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
     <Label text="schema: " styleClass="jfx-label"
            GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-    <TextField fx:id="txt_schema" text="tpch" styleClass="jfx-text"
+    <JFXTextField fx:id="txt_schema" text="tpch" styleClass="jfx-text"
                GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
     <Label text="user: " styleClass="jfx-label"
            GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-    <TextField fx:id="txt_user" text="postgres" styleClass="jfx-text"
+    <JFXTextField fx:id="txt_user" text="postgres" styleClass="jfx-text"
                GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
     <Label text="password: " styleClass="jfx-label"
            GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-    <PasswordField fx:id="pwd_password" text="regan0429" styleClass="jfx-text"
-                   GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+    <JFXPasswordField fx:id="pwd_password" text="regan0429" styleClass="jfx-text"
+                      GridPane.columnIndex="1" GridPane.rowIndex="6"/>
 
     <JFXButton text="重置"
                GridPane.columnIndex="0" GridPane.rowIndex="7"
