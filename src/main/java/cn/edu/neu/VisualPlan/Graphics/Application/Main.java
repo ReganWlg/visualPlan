@@ -12,12 +12,12 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/ConnectDB.fxml"));
-            primaryStage.setTitle("连接数据库");
+            primaryStage.setTitle("连接数据库_0");
             primaryStage.setScene(new Scene(root));
             primaryStage.setResizable(false);
             primaryStage.show();
             //将“连接数据库“窗口保存到map中
-            StageManager.STAGE.put("ConnectDB", primaryStage);
+            StageManager.STAGE.put("ConnectDB_0", primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -54,14 +54,20 @@
         <Label fx:id="l_user" styleClass="jfx-contentLabel"
                GridPane.rowIndex="6" GridPane.columnIndex="1" GridPane.halignment="CENTER"/>
 
-        <HBox alignment="CENTER" GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.columnSpan="2">
-            <JFXButton fx:id="btn_disconnectDBMS" text="断开当前数据库"
-                       onAction="#disconnect" styleClass="jfx-button">
-                <font>
-                    <Font name="System Bold"/>
-                </font>
-            </JFXButton>
-        </HBox>
+        <JFXButton fx:id="btn_disconnectDBMS" text="断开当前数据库"
+                   onAction="#disconnect" styleClass="jfx-button"
+                   GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+            <font>
+                <Font name="System Bold"/>
+            </font>
+        </JFXButton>
+        <JFXButton fx:id="btn_connectNewDBMS" text="连接新数据库"
+                   onAction="#connectNew" styleClass="jfx-button"
+                   GridPane.rowIndex="7" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+            <font>
+                <Font name="System Bold"/>
+            </font>
+        </JFXButton>
 
         <Label text="SQL: " GridPane.rowIndex="8" GridPane.columnIndex="0" GridPane.columnSpan="2">
             <font>
@@ -71,33 +77,29 @@
         <JFXTextArea fx:id="txt_sql" prefHeight="200"
                      GridPane.rowIndex="9" GridPane.columnSpan="2"/>
 
-        <HBox alignment="CENTER" spacing="20"
-              GridPane.rowIndex="10" GridPane.columnSpan="2">
-            <fx:define>
-                <ToggleGroup fx:id="modeGroup"/>
-            </fx:define>
-            <JFXRadioButton fx:id="btn_mode0" text="缩略模式"
-                            toggleGroup="$modeGroup" styleClass="jfx-radio-button" selected="true"
-                            GridPane.rowIndex="10" GridPane.columnIndex="0"
-                            onAction="#changeToMode0"/>
-            <JFXRadioButton fx:id="btn_mode1" text="详细模式"
-                            toggleGroup="$modeGroup" styleClass="jfx-radio-button"
-                            GridPane.rowIndex="10" GridPane.columnIndex="1"
-                            onAction="#changeToMode1"/>
-        </HBox>
+        <fx:define>
+            <ToggleGroup fx:id="modeGroup"/>
+        </fx:define>
+        <JFXRadioButton fx:id="btn_mode0" text="缩略模式"
+                        toggleGroup="$modeGroup" styleClass="jfx-radio-button" selected="true"
+                        GridPane.rowIndex="10" GridPane.columnIndex="0"
+                        onAction="#changeToMode0" GridPane.halignment="CENTER"/>
+        <JFXRadioButton fx:id="btn_mode1" text="详细模式"
+                        toggleGroup="$modeGroup" styleClass="jfx-radio-button"
+                        GridPane.rowIndex="10" GridPane.columnIndex="1"
+                        onAction="#changeToMode1" GridPane.halignment="CENTER"/>
 
-        <HBox alignment="CENTER" GridPane.rowIndex="11" GridPane.columnSpan="2">
-            <JFXToggleButton fx:id="btn_calcite" styleClass="jfx-toggle-button"
-                             text="使用Calcite优化器进行优化"/>
-        </HBox>
+        <JFXToggleButton fx:id="btn_calcite" styleClass="jfx-toggle-button"
+                         text="使用Calcite优化器进行优化" GridPane.halignment="CENTER"
+                         GridPane.rowIndex="11" GridPane.columnSpan="2"/>
 
-        <HBox alignment="CENTER" GridPane.rowIndex="12" GridPane.columnIndex="0" GridPane.columnSpan="2">
-            <JFXButton fx:id="btn_query" text="查询执行计划" onAction="#queryExecutionPlan" styleClass="jfx-button">
-                <font>
-                    <Font name="System Bold"/>
-                </font>
-            </JFXButton>
-        </HBox>
+        <JFXButton fx:id="btn_query" text="查询执行计划" onAction="#queryExecutionPlan" styleClass="jfx-button"
+                   GridPane.columnIndex="0" GridPane.rowIndex="12"
+                   GridPane.columnSpan="2" GridPane.halignment="CENTER">
+            <font>
+                <Font name="System Bold"/>
+            </font>
+        </JFXButton>
 
         <Label text="Planning Time: " styleClass="jfx-titleLabel"
                GridPane.rowIndex="13" GridPane.columnIndex="0"/>
@@ -116,7 +118,7 @@
         <HBox alignment="CENTER">
             <Label text="当前没有查询执行计划">
                 <font>
-                    <Font size="22"/>
+                    <Font size="24"/>
                 </font>
             </Label>
         </HBox>

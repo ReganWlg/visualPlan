@@ -58,14 +58,13 @@
 
     <Label text="password: " styleClass="jfx-label"
            GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-    <JFXPasswordField fx:id="pwd_password" text="regan0429" styleClass="jfx-text"
+    <JFXPasswordField fx:id="pwd_password" text="123456" styleClass="jfx-text"
                       GridPane.columnIndex="1" GridPane.rowIndex="6"/>
 
     <JFXButton text="重置"
                GridPane.columnIndex="0" GridPane.rowIndex="7"
                onAction="#clear" styleClass="jfx-button"/>
-    <HBox GridPane.columnIndex="1" GridPane.rowIndex="7" alignment="CENTER_RIGHT">
-        <JFXButton fx:id="connectDBMS" text="连接"
-                   onAction="#connect" styleClass="jfx-button"/>
-    </HBox>
+
+    <JFXButton fx:id="connectDBMS" text="连接" onAction="#connect" styleClass="jfx-button"
+               GridPane.columnIndex="1" GridPane.rowIndex="7" GridPane.halignment="RIGHT"/>
 </GridPane>

@@ -88,12 +88,12 @@ public final class MySQLVisualPlanTreeGenerator implements VisualPlanTreeGenerat
         }
     };
 
-    private Pattern _levelAndDescriptionPattern = Pattern.compile("(.*)-> (.*)");
+    private final Pattern _levelAndDescriptionPattern = Pattern.compile("(.*)-> (.*)");
     private final int RECESS_LENGTH = 4;
     private LevelAndDescription splitLevelAndDescription(String nodeRawString) {
         Matcher matcher = _levelAndDescriptionPattern.matcher(nodeRawString);
         if (!matcher.find()) {
-            System.err.println(String.format("can't split, please check raw string: %s", nodeRawString));
+            System.err.printf("can't split, please check raw string: %s%n", nodeRawString);
             return null;
         }
         int level = matcher.group(1).length() / RECESS_LENGTH;

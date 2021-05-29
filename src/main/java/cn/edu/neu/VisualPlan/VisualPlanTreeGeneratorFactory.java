@@ -10,13 +10,16 @@ public final class VisualPlanTreeGeneratorFactory {
     }
 
     public static VisualPlanTreeGenerator create(String dbms) {
-        if (dbms.equals("mysql")) {
-            return MySQLVisualPlanTreeGenerator.getInstance();
-        } else if (dbms.equals("postgresql")) {
-            return PostgreSQLVisualPlanTreeGenerator.getInstance();
-        } else if (dbms.equals("mysql_calcite") || dbms.equals("postgresql_calcite")) {
-            return CalciteVisualPlanTreeGenerator.getInstance();
+        switch (dbms) {
+            case "mysql":
+                return MySQLVisualPlanTreeGenerator.getInstance();
+            case "postgresql":
+                return PostgreSQLVisualPlanTreeGenerator.getInstance();
+            case "mysql_calcite":
+            case "postgresql_calcite":
+                return CalciteVisualPlanTreeGenerator.getInstance();
+            default:
+                return null;
         }
-        return null;
     }
 }

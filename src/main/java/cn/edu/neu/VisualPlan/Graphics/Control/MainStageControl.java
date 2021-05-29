@@ -13,7 +13,10 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXToggleButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Paint;
@@ -46,6 +49,8 @@ public class MainStageControl implements Initializable {
     @FXML
     private JFXButton btn_disconnectDBMS;
     @FXML
+    private JFXButton btn_connectNewDBMS;
+    @FXML
     private JFXTextArea txt_sql;
     @FXML
     private JFXRadioButton btn_mode0;
@@ -64,11 +69,14 @@ public class MainStageControl implements Initializable {
     private VisualPlanNode root;
     private boolean haveQuery;
     private int displayMode;
+    private int index;
 
     // MainStage初始化
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ConnectDBControl connectDBControl = (ConnectDBControl) StageManager.CONTROLLER.get("ConnectDBControl");
+        index = StageManager.CURRENT_INDEX;
+        String controlKey = "ConnectDBControl_" + index;
+        ConnectDBControl connectDBControl = (ConnectDBControl) StageManager.CONTROLLER.get(controlKey);
         l_dbms.setText(connectDBControl.getDBMS());
         l_ip.setText(connectDBControl.getIp());
         l_port.setText(connectDBControl.getPort());
@@ -80,31 +88,27 @@ public class MainStageControl implements Initializable {
         }
         l_user.setText(connectDBControl.getUser());
 
-        if (connectDBControl.getDBMS().equals("postgresql")) {
-            txt_sql.setText("Select P.P_NAME, P.P_mfgr,\n" +
-                    "P.P_RETAILPRICE, PS.PS_SUPPLYCOST\n" +
-                    "From part P, partsupp PS\n" +
-                    "Where P.P_RETAILPRICE>PS.PS_SUPPLYCOST\n" +
-                    "Limit 200 ");
-//            txt_sql.setText("SELECT C_CUSTKEY, C_NAME\n" +
-//                    "FROM CUSTOMER C\n" +
-//                    "WHERE NOT EXISTS (\n" +
-//                        "SELECT O.O_CUSTKEY\n" +
-//                        "FROM Orders O, Lineitem L, PartSupp PS, Part P\n" +
-//                        "WHERE C.C_CUSTKEY=O.O_CUSTKEY AND\n" +
-//                            "O.O_ORDERKEY=L.L_ORDERKEY AND\n" +
-//                            "L.L_PARTKEY=PS.PS_PARTKEY AND\n" +
-//                            "L.L_SUPPKEY= PS.PS_SUPPKEY AND\n" +
-//                            "PS.PS_PARTKEY=P.P_PARTKEY AND\n" +
-//                            "P.P_BRAND='Brand#13')\n" +
-//                    "Limit 200;");
-        } else {
-            txt_sql.setText("select * from views");
-        }
+        txt_sql.setText("Select P.P_NAME, P.P_mfgr,\n" +
+                "P.P_RETAILPRICE, PS.PS_SUPPLYCOST\n" +
+                "From part P, partsupp PS\n" +
+                "Where P.P_RETAILPRICE>PS.PS_SUPPLYCOST\n" +
+                "Limit 200 ");
+//        txt_sql.setText("SELECT C_CUSTKEY, C_NAME\n" +
+//                "FROM CUSTOMER C\n" +
+//                "WHERE NOT EXISTS (\n" +
+//                    "SELECT O.O_CUSTKEY\n" +
+//                    "FROM Orders O, Lineitem L, PartSupp PS, Part P\n" +
+//                    "WHERE C.C_CUSTKEY=O.O_CUSTKEY AND\n" +
+//                        "O.O_ORDERKEY=L.L_ORDERKEY AND\n" +
+//                        "L.L_PARTKEY=PS.PS_PARTKEY AND\n" +
+//                        "L.L_SUPPKEY= PS.PS_SUPPKEY AND\n" +
+//                        "PS.PS_PARTKEY=P.P_PARTKEY AND\n" +
+//                        "P.P_BRAND='Brand#13')\n" +
+//                "Limit 200;");
 
         haveQuery = false;
         displayMode = 0;
-        StageManager.CONTROLLER.put("MainStageControl", this);
+        //StageManager.CONTROLLER.put("MainStageControl", this);
     }
 
     // 断开当前数据库连接
@@ -114,11 +118,12 @@ public class MainStageControl implements Initializable {
                 .setMessage("确认断开将返回连接数据库界面")
                 .setNegativeBtn("取消")
                 .setPositiveBtn("确定", () -> {
+                    String stageKey = "MainStage_" + index;
                     // 关闭当前主界面
-                    StageManager.STAGE.get("MainStage").close();
+                    StageManager.STAGE.get(stageKey).close();
                     // 删除map中主界面的引用
-                    StageManager.STAGE.remove("MainStage");
-                    StageManager.CONTROLLER.remove("MainStageControl");
+                    StageManager.STAGE.remove(stageKey);
+                    // StageManager.CONTROLLER.remove("MainStageControl");
                     // 释放资源
                     if (conn != null) {
                         try {
@@ -127,9 +132,32 @@ public class MainStageControl implements Initializable {
                             e.printStackTrace();
                         }
                     }
+                    stageKey = "ConnectDB_" + index;
                     // 打开连接数据库界面
-                    Stage stage = StageManager.STAGE.get("ConnectDB");
+                    Stage stage = StageManager.STAGE.get(stageKey);
                     stage.show();
+                })
+                .create();
+    }
+
+    // 连接新数据库
+    public void connectNew(ActionEvent event) {
+        new DialogBuilder(btn_connectNewDBMS)
+                .setTitle("是否连接新数据库？")
+                .setMessage("确认将打开一个新的连接数据库界面")
+                .setNegativeBtn("取消")
+                .setPositiveBtn("确定", () -> {
+                    // 新建stage，加载MainStage窗口
+                    Stage stage = new Stage();
+                    StageManager.TOTAL_INDEX++;
+                    Parent root = FXMLLoader.load(getClass().getResource("/ConnectDB.fxml"));
+                    String title = "连接数据库_" + StageManager.TOTAL_INDEX;
+                    stage.setTitle(title);
+                    stage.setResizable(false);
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                    String key = "ConnectDB_" + StageManager.TOTAL_INDEX;
+                    StageManager.STAGE.put(key, stage);
                 })
                 .create();
     }
@@ -156,7 +184,8 @@ public class MainStageControl implements Initializable {
 
     // 查询当前SQL的执行计划
     public void queryExecutionPlan(ActionEvent event) {
-        ConnectDBControl connectDBControl = (ConnectDBControl) StageManager.CONTROLLER.get("ConnectDBControl");
+        String controlKey = "ConnectDBControl_" + index;
+        ConnectDBControl connectDBControl = (ConnectDBControl) StageManager.CONTROLLER.get(controlKey);
         // 当前的模式
         if (btn_mode0.isSelected()) {
             displayMode = 0;

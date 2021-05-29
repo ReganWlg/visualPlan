@@ -181,6 +181,14 @@ java 的通用 dbms 接口协议。
 3. 优化Calcite查询的显示效果。
    ![optimize the display of calcite visual plan tree](./Images/optimize_the_display_of_calcite_visual_plan_tree.png)
 
+## 5月29日更新
+
+1. 新增“连接新数据库”功能；
+   ![connect new DBMS 1](./Images/connect_new_DBMS_1.png)
+   ![connect new DBMS 2](./Images/connect_new_DBMS_2.png)
+2. VisualPlanTreeGeneratorFactory部分代码优化；
+3. MainStage.fxml部分代码优化。
+
 # 8. 以后的任务
 
 ## 1月16日新增

@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
+
 public class DialogBuilder {
     private String title, message;
     private JFXButton negativeBtn = null;
@@ -86,7 +88,11 @@ public class DialogBuilder {
         negativeBtn.setOnAction(addEvent -> {
             alert.hideWithAnimation();
             if (negativeBtnOnclickListener != null) {
-                negativeBtnOnclickListener.onClick();
+                try {
+                    negativeBtnOnclickListener.onClick();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         return this;
@@ -135,7 +141,11 @@ public class DialogBuilder {
         positiveBtn.setOnAction(closeEvent -> {
             alert.hideWithAnimation();
             if (positiveBtnOnclickListener != null) {
-                positiveBtnOnclickListener.onClick();//回调onClick方法
+                try {
+                    positiveBtnOnclickListener.onClick();//回调onClick方法
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         return this;
@@ -173,7 +183,7 @@ public class DialogBuilder {
     }
 
     public interface OnClickListener {
-        void onClick();
+        void onClick() throws IOException;
     }
 
 }

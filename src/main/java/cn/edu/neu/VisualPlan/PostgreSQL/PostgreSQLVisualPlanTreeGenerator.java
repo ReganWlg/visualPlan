@@ -93,10 +93,10 @@ public class PostgreSQLVisualPlanTreeGenerator implements VisualPlanTreeGenerato
         }
     };
 
-    private Pattern _levelAndDescriptionPattern1 = Pattern.compile("(.*)->  (.*)");
-    private Pattern _levelAndDescriptionPattern2 = Pattern.compile("(.*)[A-Z](.*)");
-    private Pattern _levelAndDescriptionPattern3 = Pattern.compile("Planning Time: (.*)");
-    private Pattern _levelAndDescriptionPattern4 = Pattern.compile("Execution Time: (.*)");
+    private final Pattern _levelAndDescriptionPattern1 = Pattern.compile("(.*)->  (.*)");
+    private final Pattern _levelAndDescriptionPattern2 = Pattern.compile("(.*)[A-Z](.*)");
+    private final Pattern _levelAndDescriptionPattern3 = Pattern.compile("Planning Time: (.*)");
+    private final Pattern _levelAndDescriptionPattern4 = Pattern.compile("Execution Time: (.*)");
     private final int RECESS_LENGTH = 6; // 缩进长度
     private void splitLevelAndDescription(String nodeRawString, LinkedList<LevelAndDescription> levelAndDescriptionList) {
         int level = 0;
@@ -124,7 +124,7 @@ public class PostgreSQLVisualPlanTreeGenerator implements VisualPlanTreeGenerato
                 description.add(nodeRawString.trim());
             }
         } else {
-            System.err.println(String.format("can't split, please check raw string: %s", nodeRawString));
+            System.err.printf("can't split, please check raw string: %s%n", nodeRawString);
         }
     }
 

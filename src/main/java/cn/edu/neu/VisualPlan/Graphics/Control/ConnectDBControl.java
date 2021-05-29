@@ -45,6 +45,7 @@ public class ConnectDBControl implements Initializable {
     @FXML
     private JFXButton connectDBMS;
 
+    private int index;
     private Connection conn;
 
     public String getDBMS() {
@@ -74,14 +75,14 @@ public class ConnectDBControl implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        index = StageManager.TOTAL_INDEX;
     }
 
     public void changeDBMS(ActionEvent event) {
         if (getDBMS().equals("mysql")) {
             txt_ip.setText("localhost");
             txt_port.setText("3306");
-            txt_database.setText("information_schema");
+            txt_database.setText("tpch");
             txt_schema.setText("");
             txt_user.setText("root");
             pwd_password.setText("123456");
@@ -92,7 +93,7 @@ public class ConnectDBControl implements Initializable {
             txt_database.setText("tpc");
             txt_schema.setText("tpch");
             txt_user.setText("postgres");
-            pwd_password.setText("regan0429");
+            pwd_password.setText("123456");
             txt_schema.setDisable(false);
         }
     }
@@ -130,15 +131,19 @@ public class ConnectDBControl implements Initializable {
                     getUser(),
                     getPassword());
 
+            String controlKey = "ConnectDBControl_" + index;
             // 将当前窗口控制器保存到map中
-            StageManager.CONTROLLER.put("ConnectDBControl", this);
+            StageManager.CONTROLLER.put(controlKey, this);
+            String stageKey = "ConnectDB_" + index;
             // 关闭当前ConnectDB窗口
-            StageManager.STAGE.get("ConnectDB").close();
+            StageManager.STAGE.get(stageKey).close();
 
+            StageManager.CURRENT_INDEX = index;
             // 新建stage，加载MainStage窗口
             Stage stage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("/MainStage.fxml"));
-            stage.setTitle("查询执行计划可视化");
+            String title = "查询执行计划可视化_" + index;
+            stage.setTitle(title);
             stage.setMaximized(true);
             stage.setScene(new Scene(root));
             // 主界面组件宽度自适应
@@ -160,8 +165,9 @@ public class ConnectDBControl implements Initializable {
             });
             stage.show();
 
+            stageKey = "MainStage_" + index;
             // 将MainStage窗口保存到map中
-            StageManager.STAGE.put("MainStage", stage);
+            StageManager.STAGE.put(stageKey, stage);
         } catch (SQLException e) {
             // 弹出错误提示框
 //            Alert alert = new Alert(Alert.AlertType.ERROR);
