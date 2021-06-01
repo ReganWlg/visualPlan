@@ -5,5 +5,5 @@ import java.sql.Statement;
 import java.sql.SQLException;
 
 public interface VisualPlanTreeGenerator {
-    VisualPlanNode getVisualPlanTree(Connection conn, String sql) throws SQLException;
+    VisualPlanNode getVisualPlanTree(Connection conn, String sql, int index) throws SQLException;
 }

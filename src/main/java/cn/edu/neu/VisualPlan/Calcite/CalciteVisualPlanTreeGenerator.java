@@ -2,6 +2,9 @@ package cn.edu.neu.VisualPlan.Calcite;
 
 import cn.edu.neu.Demo.Demo06;
 import cn.edu.neu.VisualPlan.Calcite.Analyzer.Analyzer;
+import cn.edu.neu.VisualPlan.Graphics.Control.MainStageControl;
+import cn.edu.neu.VisualPlan.Graphics.Util.DialogBuilder;
+import cn.edu.neu.VisualPlan.Graphics.Util.StageManager;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGenerator;
 import com.google.common.collect.ImmutableSet;
@@ -44,6 +47,7 @@ import java.util.*;
 
 public class CalciteVisualPlanTreeGenerator implements VisualPlanTreeGenerator {
     private static VisualPlanTreeGenerator _instance = new CalciteVisualPlanTreeGenerator();
+    private int _index;
 
     private CalciteVisualPlanTreeGenerator() {
 
@@ -54,7 +58,8 @@ public class CalciteVisualPlanTreeGenerator implements VisualPlanTreeGenerator {
     }
 
     @Override
-    public VisualPlanNode getVisualPlanTree(Connection conn, String sql) throws SQLException {
+    public VisualPlanNode getVisualPlanTree(Connection conn, String sql, int index) throws SQLException {
+        _index = index;
         String planRawString = getPlanRawString(conn, sql);
         System.out.println(planRawString);
         return convVisualPlanTree(planRawString);
@@ -200,6 +205,13 @@ public class CalciteVisualPlanTreeGenerator implements VisualPlanTreeGenerator {
 
         } catch (/*SQLException | */SqlParseException e) {
             e.printStackTrace();
+            String controlKey = "MainStageControl_" + _index;
+            MainStageControl mainStageControl = (MainStageControl) StageManager.CONTROLLER.get(controlKey);
+            new DialogBuilder(mainStageControl.btn_query)
+                    .setTitle("查询失败!")
+                    .setMessage("请检查SQL语句，重新查询")
+                    .setPositiveBtn("确定")
+                    .create();
         }
         return planRawString;
     }

@@ -1,5 +1,8 @@
 package cn.edu.neu.VisualPlan.PostgreSQL;
 
+import cn.edu.neu.VisualPlan.Graphics.Control.MainStageControl;
+import cn.edu.neu.VisualPlan.Graphics.Util.DialogBuilder;
+import cn.edu.neu.VisualPlan.Graphics.Util.StageManager;
 import cn.edu.neu.VisualPlan.PostgreSQL.Analyzer.Analyzer;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGenerator;
@@ -14,6 +17,7 @@ import java.util.regex.Pattern;
 
 public class PostgreSQLVisualPlanTreeGenerator implements VisualPlanTreeGenerator {
     private static VisualPlanTreeGenerator _instance = new PostgreSQLVisualPlanTreeGenerator();
+    private int _index;
 
     private PostgreSQLVisualPlanTreeGenerator() {
 
@@ -24,7 +28,8 @@ public class PostgreSQLVisualPlanTreeGenerator implements VisualPlanTreeGenerato
     }
 
     @Override
-    public VisualPlanNode getVisualPlanTree(Connection conn, String sql) throws SQLException {
+    public VisualPlanNode getVisualPlanTree(Connection conn, String sql, int index) throws SQLException {
+        _index = index;
         Statement stmt = null;
         ArrayList<String> planRawString = new ArrayList<>();
         try {
@@ -48,12 +53,23 @@ public class PostgreSQLVisualPlanTreeGenerator implements VisualPlanTreeGenerato
 
     private ArrayList<String> getPlanRawString(Statement stmt, String sql) throws SQLException {
         ArrayList<String> planRawString = new ArrayList<String>();
-        ResultSet rs = stmt.executeQuery(String.format("explain analyze %s", sql));
-        while (rs.next()) {
-            System.out.println(rs.getString(1));
-            planRawString.add(rs.getString(1));
+        try {
+            ResultSet rs = stmt.executeQuery(String.format("explain analyze %s", sql));
+            while (rs.next()) {
+                System.out.println(rs.getString(1));
+                planRawString.add(rs.getString(1));
+            }
+            rs.close();
+        } catch (SQLException e) {
+            String controlKey = "MainStageControl_" + _index;
+            MainStageControl mainStageControl = (MainStageControl) StageManager.CONTROLLER.get(controlKey);
+            new DialogBuilder(mainStageControl.btn_query)
+                    .setTitle("查询失败!")
+                    .setMessage("请检查SQL语句，重新查询")
+                    .setPositiveBtn("确定")
+                    .create();
         }
-        rs.close();
+
         return planRawString;
     }
 

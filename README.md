@@ -80,14 +80,13 @@ java 的通用 dbms 接口协议。
 
 除了 java 的，C++ 的实现最好。
 
-考虑到可能以后与 calcite 结合，所以使用 JDBC。
+考虑到与 calcite 结合，所以使用 JDBC。
 
 # 6. 可视化框架
 
 会采用原生 java 的框架，javafx
 
-1. 为了以后 calcite 的结合；
-2. 与甲方的技术栈保持一致。
+为了与 calcite 的结合；
 
 # 7. 目前的效果
 
@@ -189,13 +188,18 @@ java 的通用 dbms 接口协议。
 2. VisualPlanTreeGeneratorFactory部分代码优化；
 3. MainStage.fxml部分代码优化。
 
-## 6月1日更新
+## 6月1日更新1
 
 1. 新增点击每个节点可以在主界面右侧显示节点详细信息的功能；
    ![display node detail](./Images/display_node_detail.png)
 2. 增加了MySQL的AccessPath类型；
 3. 增加了Calcite的AccessPath类型；
-4. 调整了drowNode函数
+4. 调整了drowNode函数。
+
+## 6月1日更新2
+
+1. SQL查询出错时弹出对话框。
+   ![pop a dialog when an SQL query fails](./Images/pop_a_dialog_when_an_SQL_query_fails.png)
 
 # 8. 以后的任务
 
