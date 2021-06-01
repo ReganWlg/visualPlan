@@ -21,7 +21,7 @@ public class Demo02 {
         MySQLVisualPlanTreeGenerator mySQLVisualPlanTreeGenerator = (MySQLVisualPlanTreeGenerator)visualPlanTreeGenerator;
         VisualPlanNode root = mySQLVisualPlanTreeGenerator.convVisualPlanTree(planRawString);
         System.out.println("levelOrder: ");
-        PrintHandler printHandler = new PrintHandler();
+        PrintHandler printHandler = new PrintHandler(0);
         printHandler.draw(root, 0);
         // UI与控制层分离后，此部分不再使用，使用Demo03模式
         // Application.launch(MainStage.class, args);

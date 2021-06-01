@@ -33,7 +33,7 @@ public class Demo01 {
             // 获取执行计划可视化数据
             VisualPlanNode root = visualPlanTreeGenerator.getVisualPlanTree(conn, sql);
             System.out.println("levelOrder: ");
-            PrintHandler printHandler = new PrintHandler();
+            PrintHandler printHandler = new PrintHandler(0);
             printHandler.draw(root, 0);
             // UI与控制层分离后，此部分不再使用，使用Demo03模式
             // Application.launch(MainStage.class, args);

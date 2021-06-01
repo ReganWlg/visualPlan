@@ -12,12 +12,17 @@ public abstract class VisualPlanNode {
     // 层序遍历时使用的变量，前端用
     // 在前端层序遍历时的索引
     private int _levelIndex = 0;
+    // 作为子节点，在子节点列表中的索引
+    private int _subNodeIndex = 0;
 
     public VisualPlanNode(int level, List<VisualPlanNode> subNodeList) {
         _level = level;
         _subNodeList = subNodeList;
+        int i = 0;
         for (VisualPlanNode subNode : getSubNodeList()) {
             subNode._parentNode = this;
+            subNode._subNodeIndex = i;
+            i++;
         }
     }
 
@@ -39,6 +44,10 @@ public abstract class VisualPlanNode {
 
     public void setLevelIndex(int levelIndex) {
         _levelIndex = levelIndex;
+    }
+
+    public int getSubNodeIndex() {
+        return _subNodeIndex;
     }
 
     public RectangleField createRectangleField(int mode) {

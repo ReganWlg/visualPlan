@@ -28,8 +28,25 @@ public class CalciteVisualPlanNode extends VisualPlanNode {
 
     @Override
     public String toString() {
-        return String.format("level: %d, description: %s, fieldMap: %s",
-                getLevel(), getDescription(), _fieldMap.toString());
+        return String.format(
+                "节点详细信息：" +
+                        "\n\n\nLevel: %d" +
+                        "\n\n\nType: %s" +
+                        "\n\n\nDescription: \n%s" +
+                        "\n\n\nRowCount: %s" +
+                        "\n\n\nCumulative Cost" +
+                        "\n\n    rows: %s" +
+                        "\n    cpu: %s" +
+                        "\n    io: %s" +
+                        "\n\n\nId: %s\n",
+                getLevel(),
+                getFieldByKey("type"),
+                getFieldByKey("description"),
+                getFieldByKey("rowCount"),
+                getFieldByKey("rows"),
+                getFieldByKey("cpu"),
+                getFieldByKey("io"),
+                getFieldByKey("id"));
     }
 
     @Override

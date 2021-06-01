@@ -21,7 +21,7 @@ public class MATERIALIZE_INFORMATION_SCHEMA_TABLE implements AccessPath {
         if (!matcher.find()) {
             return false;
         }
-        fieldMap.put("type", "MATERIALIZED_INFORMATION_SCHEMA_TABLE");
+        fieldMap.put("type", "MATERIALIZED_\nINFORMATION_\nSCHEMA_TABLE");
         fieldMap.put("1", matcher.group(1));
         return true;
     }

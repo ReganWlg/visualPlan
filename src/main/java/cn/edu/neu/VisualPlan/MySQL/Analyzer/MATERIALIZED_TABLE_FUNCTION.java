@@ -21,7 +21,7 @@ public class MATERIALIZED_TABLE_FUNCTION implements AccessPath {
         if (!matcher.find()) {
             return false;
         }
-        fieldMap.put("type", "MATERIALIZED_TABLE_FUNCTION");
+        fieldMap.put("type", "MATERIALIZED_\nTABLE_FUNCTION");
         return true;
     }
 }

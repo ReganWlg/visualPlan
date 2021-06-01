@@ -27,7 +27,28 @@ public final class MySQLVisualPlanNode extends VisualPlanNode {
 
     @Override
     public String toString() {
-        return String.format("level: %d, description: %s, fieldMap: %s", getLevel(), getDescription(), _fieldMap.toString());
+        return String.format(
+                "节点详细信息：" +
+                        "\n\n\nLevel: %d" +
+                        "\n\n\nType: %s" +
+                        "\n\n\nDescription: \n%s" +
+                        "\n\n\nEstimate" +
+                        "\n\n    cost: %s" +
+                        "\n    rows: %s" +
+                        "\n\n\nActual" +
+                        "\n\n    first row: %s(ms)" +
+                        "\n    all rows: %s(ms)" +
+                        "\n    rows: %s" +
+                        "\n    loops: %s\n",
+                getLevel(),
+                getFieldByKey("type"),
+                getFieldByKey("description"),
+                getFieldByKey("cost"),
+                getFieldByKey("output_rows"),
+                getFieldByKey("Timing_first_row_ms"),
+                getFieldByKey("Timing_last_row_ms"),
+                getFieldByKey("Timing_rows"),
+                getFieldByKey("Timing_loops"));
     }
 
     @Override

@@ -21,7 +21,7 @@ public class ZERO_ROWS_AGGREGATED implements AccessPath {
         if (!matcher.find()) {
             return false;
         }
-        fieldMap.put("type", "ZERO_ROWS_AGGREGATED");
+        fieldMap.put("type", "ZERO_ROWS\n_AGGREGATED");
         fieldMap.put("1", matcher.group(1));
         return true;
     }

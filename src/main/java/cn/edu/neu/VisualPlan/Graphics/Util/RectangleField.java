@@ -4,10 +4,13 @@ import cn.edu.neu.VisualPlan.Calcite.CalciteVisualPlanNode;
 import cn.edu.neu.VisualPlan.MySQL.MySQLVisualPlanNode;
 import cn.edu.neu.VisualPlan.PostgreSQL.PostgreSQLVisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -83,8 +86,17 @@ public class RectangleField extends StackPane {
                 gridPane.add(type, 0, 0);
                 GridPane.setColumnSpan(type, 3);
 
+                String str = "";
+                if (node.getFieldByKey("description") != null) {
+                    if (node.getFieldByKey("description").length() > 75) {
+                        str = node.getFieldByKey("description").substring(0, 75) + " ...";
+                    } else {
+                        str = node.getFieldByKey("description");
+                    }
+                }
+
                 Text description = new Text(
-                        String.format("Description: %s", node.getFieldByKey("description")));
+                        String.format("Description: %s", str));
                 description.setWrappingWidth(TEXT_WIDTH);
                 gridPane.add(description, 0, 1);
                 GridPane.setColumnSpan(description, 3);
@@ -111,7 +123,7 @@ public class RectangleField extends StackPane {
                 GridPane.setMargin(actual, new Insets(5, 0, 0, 0));
 
                 Label actualTimeEachRow = new Label(
-                        String.format("each row=%sms", node.getFieldByKey("Timing_first_row_ms")));
+                        String.format("first row=%sms", node.getFieldByKey("Timing_first_row_ms")));
                 gridPane.add(actualTimeEachRow, 1, 3);
 
                 Label actualTimeAllRows = new Label(
@@ -151,8 +163,17 @@ public class RectangleField extends StackPane {
                 GridPane.setMargin(type, new Insets(0, 0, 0, 10));
                 GridPane.setColumnSpan(type, 4);
 
+                String str = "";
+                if (node.getFieldByKey("description") != null) {
+                    if (node.getFieldByKey("description").length() > 75) {
+                        str = node.getFieldByKey("description").substring(0, 75) + " ...";
+                    } else {
+                        str = node.getFieldByKey("description");
+                    }
+                }
+
                 Text description = new Text(
-                        String.format("Description: %s", node.getFieldByKey("description")));
+                        String.format("Description: %s", str));
                 description.setWrappingWidth(TEXT_WIDTH);
                 gridPane.add(description, 0, 1);
                 GridPane.setColumnSpan(description, 4);
@@ -229,8 +250,17 @@ public class RectangleField extends StackPane {
                 gridPane.add(type, 0, 0);
                 GridPane.setColumnSpan(type, 3);
 
+                String str = "";
+                if (node.getFieldByKey("description") != null) {
+                    if (node.getFieldByKey("description").length() > 75) {
+                        str = node.getFieldByKey("description").substring(0, 75) + " ...";
+                    } else {
+                        str = node.getFieldByKey("description");
+                    }
+                }
+
                 Text description = new Text(
-                        String.format("Description: %s", node.getFieldByKey("description")));
+                        String.format("Description: %s", str));
                 description.setWrappingWidth(TEXT_WIDTH);
                 gridPane.add(description, 0, 1);
                 GridPane.setColumnSpan(description, 3);

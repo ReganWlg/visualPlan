@@ -9,6 +9,7 @@
 <?import com.jfoenix.controls.JFXToggleButton?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXRadioButton?>
+<?import javafx.scene.text.Text?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="cn.edu.neu.VisualPlan.Graphics.Control.MainStageControl"
@@ -101,12 +102,12 @@
             </font>
         </JFXButton>
 
-        <Label text="Planning Time: " styleClass="jfx-titleLabel"
+        <Label fx:id="l_planningTime_title" styleClass="jfx-titleLabel"
                GridPane.rowIndex="13" GridPane.columnIndex="0"/>
         <Label fx:id="l_planningTime" styleClass="jfx-contentLabel"
                GridPane.rowIndex="13" GridPane.columnIndex="1"/>
 
-        <Label text="Execution Time: " styleClass="jfx-titleLabel"
+        <Label fx:id="l_executionTime_title" styleClass="jfx-titleLabel"
                GridPane.rowIndex="14" GridPane.columnIndex="0"/>
         <Label fx:id="l_executionTime" styleClass="jfx-contentLabel"
                GridPane.rowIndex="14" GridPane.columnIndex="1"/>
@@ -123,5 +124,16 @@
             </Label>
         </HBox>
     </ScrollPane>
+
+    <VBox minWidth="300" alignment="TOP_CENTER">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+        <Text fx:id="txt_detail" wrappingWidth="250" text="节点详细信息：">
+            <font>
+                <Font name="System Bold" size="14"/>
+            </font>
+        </Text>
+    </VBox>
 
 </HBox>

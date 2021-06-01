@@ -21,7 +21,7 @@ public class UNQUALIFIED_COUNT implements AccessPath {
         if (!matcher.find()) {
             return false;
         }
-        fieldMap.put("type", "UNQUALIFIED_COUNT");
+        fieldMap.put("type", "UNQUALIFIED\n_COUNT");
         fieldMap.put("1", matcher.group(1));
         return true;
     }

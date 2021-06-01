@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.PrintWriter;
@@ -61,15 +62,26 @@ public class MainStageControl implements Initializable {
     @FXML
     private JFXButton btn_query;
     @FXML
+    private Label l_planningTime_title;
+    @FXML
     private Label l_planningTime;
     @FXML
+    private Label l_executionTime_title;
+    @FXML
     private Label l_executionTime;
+    @FXML
+    private Text txt_detail;
 
     private Connection conn;
     private VisualPlanNode root;
+    private PrintHandler printHandler;
     private boolean haveQuery;
     private int displayMode;
     private int index;
+
+    public void setTxtDetail(String txtDetail) {
+        txt_detail.setText(txtDetail);
+    }
 
     // MainStage初始化
     @Override
@@ -88,23 +100,23 @@ public class MainStageControl implements Initializable {
         }
         l_user.setText(connectDBControl.getUser());
 
-        txt_sql.setText("Select P.P_NAME, P.P_mfgr,\n" +
-                "P.P_RETAILPRICE, PS.PS_SUPPLYCOST\n" +
-                "From part P, partsupp PS\n" +
-                "Where P.P_RETAILPRICE>PS.PS_SUPPLYCOST\n" +
-                "Limit 200 ");
-//        txt_sql.setText("SELECT C_CUSTKEY, C_NAME\n" +
-//                "FROM CUSTOMER C\n" +
-//                "WHERE NOT EXISTS (\n" +
-//                    "SELECT O.O_CUSTKEY\n" +
-//                    "FROM Orders O, Lineitem L, PartSupp PS, Part P\n" +
-//                    "WHERE C.C_CUSTKEY=O.O_CUSTKEY AND\n" +
-//                        "O.O_ORDERKEY=L.L_ORDERKEY AND\n" +
-//                        "L.L_PARTKEY=PS.PS_PARTKEY AND\n" +
-//                        "L.L_SUPPKEY= PS.PS_SUPPKEY AND\n" +
-//                        "PS.PS_PARTKEY=P.P_PARTKEY AND\n" +
-//                        "P.P_BRAND='Brand#13')\n" +
-//                "Limit 200;");
+//        txt_sql.setText("Select P.P_NAME, P.P_mfgr,\n" +
+//                "P.P_RETAILPRICE, PS.PS_SUPPLYCOST\n" +
+//                "From part P, partsupp PS\n" +
+//                "Where P.P_RETAILPRICE>PS.PS_SUPPLYCOST\n" +
+//                "Limit 200 ");
+        txt_sql.setText("SELECT C_CUSTKEY, C_NAME\n" +
+                "FROM CUSTOMER C\n" +
+                "WHERE NOT EXISTS (\n" +
+                    "SELECT O.O_CUSTKEY\n" +
+                    "FROM Orders O, Lineitem L, PartSupp PS, Part P\n" +
+                    "WHERE C.C_CUSTKEY=O.O_CUSTKEY AND\n" +
+                        "O.O_ORDERKEY=L.L_ORDERKEY AND\n" +
+                        "L.L_PARTKEY=PS.PS_PARTKEY AND\n" +
+                        "L.L_SUPPKEY= PS.PS_SUPPKEY AND\n" +
+                        "PS.PS_PARTKEY=P.P_PARTKEY AND\n" +
+                        "P.P_BRAND='Brand#13')\n" +
+                "Limit 200");
 
         haveQuery = false;
         displayMode = 0;
@@ -119,11 +131,12 @@ public class MainStageControl implements Initializable {
                 .setNegativeBtn("取消")
                 .setPositiveBtn("确定", () -> {
                     String stageKey = "MainStage_" + index;
+                    String controlKey = "MainStageControl_" + index;
                     // 关闭当前主界面
                     StageManager.STAGE.get(stageKey).close();
                     // 删除map中主界面的引用
                     StageManager.STAGE.remove(stageKey);
-                    // StageManager.CONTROLLER.remove("MainStageControl");
+                    StageManager.CONTROLLER.remove(controlKey);
                     // 释放资源
                     if (conn != null) {
                         try {
@@ -166,7 +179,7 @@ public class MainStageControl implements Initializable {
     public void changeToMode0(ActionEvent event) {
         if (haveQuery && displayMode == 1) {
             displayMode = 0;
-            PrintHandler printHandler = new PrintHandler();
+            printHandler = new PrintHandler(index);
             printHandler.draw(root, displayMode);
             scrollPane.setContent(printHandler.getRoot());
         }
@@ -176,7 +189,7 @@ public class MainStageControl implements Initializable {
     public void changeToMode1(ActionEvent event) {
         if (haveQuery && displayMode == 0) {
             displayMode = 1;
-            PrintHandler printHandler = new PrintHandler();
+            printHandler = new PrintHandler(index);
             printHandler.draw(root, displayMode);
             scrollPane.setContent(printHandler.getRoot());
         }
@@ -258,17 +271,28 @@ public class MainStageControl implements Initializable {
             // 获取执行计划可视化数据
             root = visualPlanTreeGenerator.getVisualPlanTree(conn, txt_sql.getText());
             System.out.println("levelOrder: ");
-            PrintHandler printHandler = new PrintHandler();
+            printHandler = new PrintHandler(index);
+
+            controlKey = "MainStageControl_" + index;
+            StageManager.CONTROLLER.put(controlKey, this);
 
             if (root instanceof PostgreSQLVisualPlanNode) {
+                l_planningTime_title.setText("Planning Time: ");
                 l_planningTime.setText(root.getFieldByKey("planning_time"));
                 l_planningTime.setTextFill(Paint.valueOf("#FF0000"));
+                l_executionTime_title.setText("Execution Time: ");
                 l_executionTime.setText(root.getFieldByKey("execution_time"));
                 l_executionTime.setTextFill(Paint.valueOf("FF0000"));
+            } else {
+                l_planningTime_title.setText("");
+                l_planningTime.setText("");
+                l_executionTime_title.setText("");
+                l_executionTime.setText("");
             }
 
             printHandler.draw(root, displayMode);
             scrollPane.setContent(printHandler.getRoot());
+            txt_detail.setText("节点详细信息：");
             haveQuery = true;
         } catch (SQLException e) {
             // 弹出错误提示框

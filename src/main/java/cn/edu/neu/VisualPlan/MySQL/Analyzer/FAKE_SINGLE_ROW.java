@@ -21,7 +21,7 @@ public class FAKE_SINGLE_ROW implements AccessPath {
         if (!matcher.find()) {
             return false;
         }
-        fieldMap.put("type", "FAKE_SINGLE_ROW");
+        fieldMap.put("type", "TABLE_VALUE_CONSTRUCTOR\nFAKE_SINGLE_ROW");
         return true;
     }
 }

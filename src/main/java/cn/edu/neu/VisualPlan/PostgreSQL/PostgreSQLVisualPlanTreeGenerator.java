@@ -97,6 +97,10 @@ public class PostgreSQLVisualPlanTreeGenerator implements VisualPlanTreeGenerato
     private final Pattern _levelAndDescriptionPattern2 = Pattern.compile("(.*)[A-Z](.*)");
     private final Pattern _levelAndDescriptionPattern3 = Pattern.compile("Planning Time: (.*)");
     private final Pattern _levelAndDescriptionPattern4 = Pattern.compile("Execution Time: (.*)");
+    private final Pattern _levelAndDescriptionPattern5 = Pattern.compile("(.*)SubPlan [1-9]+[0-9]*$");
+    private boolean isSubPlan = false;
+    private int subPlanLevel = 0;
+    private int subPlanSpacingLength = 0;
     private final int RECESS_LENGTH = 6; // 缩进长度
     private void splitLevelAndDescription(String nodeRawString, LinkedList<LevelAndDescription> levelAndDescriptionList) {
         int level = 0;
@@ -105,14 +109,30 @@ public class PostgreSQLVisualPlanTreeGenerator implements VisualPlanTreeGenerato
         Matcher matcher2 = _levelAndDescriptionPattern2.matcher(nodeRawString);
         Matcher matcher3 = _levelAndDescriptionPattern3.matcher(nodeRawString);
         Matcher matcher4 = _levelAndDescriptionPattern4.matcher(nodeRawString);
+        Matcher matcher5 = _levelAndDescriptionPattern5.matcher(nodeRawString);
         if (matcher1.find()) {
-            level = matcher1.group(1).length() / RECESS_LENGTH + 1;
+            if (isSubPlan) {
+                level = (matcher1.group(1).length() - subPlanSpacingLength) / RECESS_LENGTH + subPlanLevel + 1;
+            } else {
+                level = matcher1.group(1).length() / RECESS_LENGTH + 1;
+                if (level < subPlanLevel) {
+                    isSubPlan = false;
+                }
+            }
             description.add(matcher1.group(2));
             levelAndDescriptionList.add(new LevelAndDescription(level, description));
         } else if (matcher3.find() || matcher4.find()) {
+            isSubPlan = false;
             LevelAndDescription rootNode = levelAndDescriptionList.getFirst();
             description = rootNode.getDescription();
             description.add(nodeRawString);
+        } else if (matcher5.find()) {
+            isSubPlan = true;
+            level = matcher5.group(1).length() / RECESS_LENGTH + 1;
+            subPlanLevel = level;
+            subPlanSpacingLength = matcher5.group(1).length();
+            description.add(nodeRawString.trim());
+            levelAndDescriptionList.add(new LevelAndDescription(level, description));
         } else if (matcher2.find()) {
             if (levelAndDescriptionList.isEmpty()) {
                 level = 0;

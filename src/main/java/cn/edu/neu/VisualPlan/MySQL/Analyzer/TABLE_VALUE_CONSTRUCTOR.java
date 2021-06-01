@@ -21,7 +21,7 @@ public class TABLE_VALUE_CONSTRUCTOR implements AccessPath {
         if (!matcher.find()) {
             return false;
         }
-        fieldMap.put("type", "TABLE_VALUE_CONSTRUCTOR");
+        fieldMap.put("type", "TABLE_VALUE\n_CONSTRUCTOR\nFAKE_SINGLE_ROW");
         return true;
     }
 }

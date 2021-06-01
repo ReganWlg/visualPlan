@@ -64,8 +64,7 @@ public final class Analyzer {
         _accessPathList.add(REF.getInstance());
         _accessPathList.add(REF_OR_NULL.getInstance());
         _accessPathList.add(EQ_REF.getInstance());
-        // todo
-        //_accessPathList.add(PUSHED_JOIN_REF.getInstance());
+        _accessPathList.add(PUSHED_JOIN_REF.getInstance());
         _accessPathList.add(FULL_TEXT_SEARCH.getInstance());
         _accessPathList.add(CONST_TABLE.getInstance());
         _accessPathList.add(MRR.getInstance());
@@ -81,28 +80,20 @@ public final class Analyzer {
         _accessPathList.add(NESTED_LOOP_JOIN.getInstance());
         _accessPathList.add(NESTED_LOOP_SEMIJOIN_WITH_DUPLICATE_REMOVAL.getInstance());
         _accessPathList.add(BKA_JOIN.getInstance());
-        // todo
-        //_accessPathList.add(HASH_JOIN.getInstance());
+        _accessPathList.add(HASH_JOIN.getInstance());
         _accessPathList.add(FILTER.getInstance());
-        // todo
-        //_accessPathList.add(SORT.getInstance());
-        // todo
-        //_accessPathList.add(PRECOMPUTED_AGGREGATE.getInstance());
-        // todo
-        //_accessPathList.add(AGGREGATE.getInstance());
-        // todo
-        //_accessPathList.add(LIMIT_OFFSET.getInstance());
-        // todo
-        //_accessPathList.add(MATERIALIZE.getInstance());
+        _accessPathList.add(SORT.getInstance());
+        _accessPathList.add(AGGREGATE.getInstance());
+        _accessPathList.add(TEMPTABLE_AGGREGATE.getInstance());
+        _accessPathList.add(LIMIT_OFFSET.getInstance());
+        _accessPathList.add(STREAM.getInstance());
+        _accessPathList.add(MATERIALIZE.getInstance());
         _accessPathList.add(MATERIALIZE_INFORMATION_SCHEMA_TABLE.getInstance());
-        // todo
-        //_accessPathList.add(APPEND.getInstance());
-        // todo
-        //_accessPathList.add(WINDOWING.getInstance());
+        _accessPathList.add(APPEND.getInstance());
+        _accessPathList.add(WINDOWING.getInstance());
         _accessPathList.add(WEEDOUT.getInstance());
         _accessPathList.add(REMOVE_DUPLICATES.getInstance());
-        // todo
-        //_accessPathList.add(ALTERNATIVE.getInstance());
+        _accessPathList.add(ALTERNATIVE.getInstance());
         _accessPathList.add(CACHE_INVALIDATOR.getInstance());
     }
 }

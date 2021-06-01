@@ -21,7 +21,7 @@ public class NESTED_LOOP_SEMIJOIN_WITH_DUPLICATE_REMOVAL implements AccessPath {
         if (!matcher.find()) {
             return false;
         }
-        fieldMap.put("type", "NESTED_LOOP_SEMIJOIN_WITH_DUPLICATE_REMOVAL");
+        fieldMap.put("type", "NESTED_LOOP_\nSEMIJOIN_WITH_\nDUPLICATE_REMOVAL");
         fieldMap.put("1", matcher.group(1));
         return true;
     }

@@ -15,7 +15,7 @@ public class SORT implements AccessPath{
         return _instance;
     }
 
-    private Pattern _pattern = Pattern.compile("SORT (.*)");
+    private Pattern _pattern = Pattern.compile("Sort (.*)");
     @Override
     public boolean tryInsertFields(Map<String, String> fieldMap, String description) {
         Matcher matcher = _pattern.matcher(description);

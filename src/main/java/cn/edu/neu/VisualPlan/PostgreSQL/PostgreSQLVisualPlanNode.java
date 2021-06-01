@@ -29,13 +29,32 @@ public class PostgreSQLVisualPlanNode extends VisualPlanNode {
 
     @Override
     public String toString() {
-//        return String.format("level: %d, description: %s, fieldMap: %s", getLevel(), getDescription(), _fieldMap.toString());
-        StringBuilder str = new StringBuilder();
-        str.append(String.format("level: %d description: ", getLevel()));
-        for (String description : _description) {
-            str.append(String.format("\n\t%s", description));
-        }
-        return str.toString();
+        return String.format(
+                "节点详细信息：" +
+                "\n\n\nLevel: %d" +
+                "\n\n\nType: %s" +
+                "\n\n\nDescription: \n%s" +
+                "\n\n\nEstimate" +
+                "\n\n    each row: %s" +
+                "\n    all rows: %s" +
+                "\n    rows: %s" +
+                "\n    width: %s" +
+                "\n\n\nActual" +
+                "\n\n    each row: %s(ms)" +
+                "\n    all rows: %s(ms)" +
+                "\n    rows: %s" +
+                "\n    loops: %s\n",
+                getLevel(),
+                getFieldByKey("type"),
+                getFieldByKey("description"),
+                getFieldByKey("estimate_cost_each_row_ms"),
+                getFieldByKey("estimate_cost_all_rows_ms"),
+                getFieldByKey("estimate_rows"),
+                getFieldByKey("estimate_width"),
+                getFieldByKey("actual_time_each_row_ms"),
+                getFieldByKey("actual_time_all_rows_ms"),
+                getFieldByKey("actual_rows"),
+                getFieldByKey("actual_loops"));
     }
 
     @Override

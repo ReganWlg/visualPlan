@@ -46,6 +46,14 @@ public class Analyzer {
     private List<AccessPath> _accessPathList = null;
     private void initAccessPathList() {
         _accessPathList = new ArrayList<>();
+        _accessPathList.add(EnumerableAggregate.getInstance());
+        _accessPathList.add(EnumerableCorrelate.getInstance());
+        _accessPathList.add(EnumerableFilter.getInstance());
+        _accessPathList.add(EnumerableHashJoin.getInstance());
+        _accessPathList.add(EnumerableLimit.getInstance());
+        _accessPathList.add(EnumerableNestedLoopJoin.getInstance());
+        _accessPathList.add(EnumerableProject.getInstance());
+        _accessPathList.add(EnumerableSort.getInstance());
         _accessPathList.add(JdbcAggregate.getInstance());
         _accessPathList.add(JdbcCalc.getInstance());
         _accessPathList.add(JdbcFilter.getInstance());

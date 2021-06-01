@@ -24,9 +24,16 @@ public final class Analyzer {
     private final Pattern _EstimateDataPattern = Pattern.compile("(.*) [(]cost=(.*)[.][.](.*) rows=(.*) width=(.*)[)]");
     private final Pattern _PlanningTimePattern = Pattern.compile("Planning Time: (.*)");
     private final Pattern _ExecutionTimePattern = Pattern.compile("Execution Time: (.*)");
+    private final Pattern _SubPlanPattern = Pattern.compile("SubPlan [1-9]+[0-9]*$");
     public Map<String, String> getFieldMapByDescription(ArrayList<String> description) {
         Map<String, String> fieldMap = new HashMap<>();
         String firstDescription = description.get(0);
+
+        Matcher subPlanMatcher = _SubPlanPattern.matcher(firstDescription);
+        if (subPlanMatcher.find()) {
+            fieldMap.put("type", "SUB_PLAN");
+            fieldMap.put("description", firstDescription);
+        }
 
         // 向fieldmap中添加"actual_time_each_row_ms"
         //                "actual_time_all_rows_ms"

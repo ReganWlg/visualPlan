@@ -4,24 +4,25 @@ import cn.edu.neu.Demo.Demo06;
 import cn.edu.neu.VisualPlan.Calcite.Analyzer.Analyzer;
 import cn.edu.neu.VisualPlan.VisualPlanNode;
 import cn.edu.neu.VisualPlan.VisualPlanTreeGenerator;
+import com.google.common.collect.ImmutableSet;
 import org.apache.calcite.adapter.enumerable.EnumerableConvention;
 import org.apache.calcite.adapter.enumerable.EnumerableRules;
 import org.apache.calcite.avatica.util.Casing;
 import org.apache.calcite.config.CalciteConnectionConfigImpl;
 import org.apache.calcite.config.CalciteConnectionProperty;
+import org.apache.calcite.config.CalciteSystemProperty;
 import org.apache.calcite.jdbc.CalciteConnection;
 import org.apache.calcite.jdbc.CalciteSchema;
 import org.apache.calcite.jdbc.JavaTypeFactoryImpl;
-import org.apache.calcite.plan.ConventionTraitDef;
-import org.apache.calcite.plan.RelOptCluster;
-import org.apache.calcite.plan.RelOptUtil;
-import org.apache.calcite.plan.RelTraitSet;
+import org.apache.calcite.plan.*;
 import org.apache.calcite.plan.volcano.VolcanoPlanner;
 import org.apache.calcite.prepare.CalciteCatalogReader;
 import org.apache.calcite.rel.RelDistributionTraitDef;
 import org.apache.calcite.rel.RelNode;
 import org.apache.calcite.rel.RelRoot;
+import org.apache.calcite.rel.rules.CoreRules;
 import org.apache.calcite.rel.rules.FilterJoinRule;
+import org.apache.calcite.rel.rules.JoinPushThroughJoinRule;
 import org.apache.calcite.rel.rules.PruneEmptyRules;
 import org.apache.calcite.rel.type.RelDataTypeSystem;
 import org.apache.calcite.rex.RexBuilder;
@@ -59,6 +60,44 @@ public class CalciteVisualPlanTreeGenerator implements VisualPlanTreeGenerator {
         return convVisualPlanTree(planRawString);
     }
 
+    public static final ImmutableSet<RelOptRule> RULE_SET =
+            ImmutableSet.of(
+                    EnumerableRules.ENUMERABLE_TABLE_SCAN_RULE,
+                    EnumerableRules.ENUMERABLE_JOIN_RULE,
+//                    EnumerableRules.ENUMERABLE_MERGE_JOIN_RULE,
+                    EnumerableRules.ENUMERABLE_CORRELATE_RULE,
+                    EnumerableRules.ENUMERABLE_PROJECT_RULE,
+                    EnumerableRules.ENUMERABLE_FILTER_RULE,
+                    EnumerableRules.ENUMERABLE_AGGREGATE_RULE,
+                    EnumerableRules.ENUMERABLE_SORT_RULE,
+                    EnumerableRules.ENUMERABLE_LIMIT_RULE,
+                    EnumerableRules.ENUMERABLE_UNION_RULE,
+                    EnumerableRules.ENUMERABLE_FILTER_TO_CALC_RULE,
+                    EnumerableRules.ENUMERABLE_INTERSECT_RULE,
+                    EnumerableRules.ENUMERABLE_MINUS_RULE,
+                    EnumerableRules.ENUMERABLE_TABLE_MODIFICATION_RULE,
+                    EnumerableRules.ENUMERABLE_VALUES_RULE,
+                    EnumerableRules.ENUMERABLE_WINDOW_RULE,
+                    EnumerableRules.ENUMERABLE_MATCH_RULE,
+                    CoreRules.PROJECT_TO_SEMI_JOIN,
+                    CoreRules.JOIN_TO_SEMI_JOIN,
+                    CoreRules.MATCH,
+                    CalciteSystemProperty.COMMUTE.value()
+                            ? CoreRules.JOIN_ASSOCIATE
+                            : CoreRules.PROJECT_MERGE,
+                    CoreRules.AGGREGATE_STAR_TABLE,
+                    CoreRules.AGGREGATE_PROJECT_STAR_TABLE,
+                    CoreRules.FILTER_SCAN,
+                    CoreRules.FILTER_PROJECT_TRANSPOSE,
+                    CoreRules.FILTER_INTO_JOIN,
+                    CoreRules.AGGREGATE_EXPAND_DISTINCT_AGGREGATES,
+                    CoreRules.AGGREGATE_REDUCE_FUNCTIONS,
+                    CoreRules.FILTER_AGGREGATE_TRANSPOSE,
+                    CoreRules.JOIN_COMMUTE,
+                    JoinPushThroughJoinRule.RIGHT,
+                    JoinPushThroughJoinRule.LEFT,
+                    CoreRules.SORT_PROJECT_TRANSPOSE);
+
     private String getPlanRawString(Connection connection, String sql) throws SQLException {
         String planRawString = null;
         CalciteConnection calciteConnection = connection.unwrap(CalciteConnection.class);
@@ -82,13 +121,20 @@ public class CalciteVisualPlanTreeGenerator implements VisualPlanTreeGenerator {
 //    planner.addRule(ReduceExpressionsRule.ProjectReduceExpressionsRule.Config.DEFAULT.toRule());
         planner.addRule(PruneEmptyRules.PROJECT_INSTANCE);
 
-        // add ConverterRule
-        planner.addRule(EnumerableRules.ENUMERABLE_JOIN_RULE);
-        planner.addRule(EnumerableRules.ENUMERABLE_SORT_RULE);
-        planner.addRule(EnumerableRules.ENUMERABLE_VALUES_RULE);
-        planner.addRule(EnumerableRules.ENUMERABLE_PROJECT_RULE);
-        planner.addRule(EnumerableRules.ENUMERABLE_FILTER_RULE);
-        planner.addRule(EnumerableRules.ENUMERABLE_FILTER_TO_CALC_RULE);
+//        // add ConverterRule
+//        planner.addRule(EnumerableRules.ENUMERABLE_JOIN_RULE);
+//        planner.addRule(EnumerableRules.ENUMERABLE_SORT_RULE);
+//        planner.addRule(EnumerableRules.ENUMERABLE_VALUES_RULE);
+//        planner.addRule(EnumerableRules.ENUMERABLE_PROJECT_RULE);
+//        planner.addRule(EnumerableRules.ENUMERABLE_FILTER_RULE);
+//        planner.addRule(EnumerableRules.ENUMERABLE_FILTER_TO_CALC_RULE);
+
+        for (RelOptRule rule : RULE_SET) {
+            planner.addRule(rule);
+        }
+//        for (RelOptRule rule : EnumerableRules.rules()) {
+//            planner.addRule(rule);
+//        }
 
         try {
             JavaTypeFactoryImpl factory = new JavaTypeFactoryImpl(RelDataTypeSystem.DEFAULT);
@@ -143,16 +189,16 @@ public class CalciteVisualPlanTreeGenerator implements VisualPlanTreeGenerator {
             planRawString = RelOptUtil.toString(relNode, SqlExplainLevel.ALL_ATTRIBUTES);
 //            System.out.println(planRawString);
 
-            long startTime = System.currentTimeMillis();
-            RelRunner runner = connection.unwrap(RelRunner.class);
-            PreparedStatement preparedStatement = runner.prepare(relNode);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            long endTime = System.currentTimeMillis();
+//            long startTime = System.currentTimeMillis();
+//            RelRunner runner = connection.unwrap(RelRunner.class);
+//            PreparedStatement preparedStatement = runner.prepare(relNode);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            long endTime = System.currentTimeMillis();
+//
+//            long queryTime = endTime - startTime;
+//            System.out.println("query time: " + queryTime);
 
-            long queryTime = endTime - startTime;
-            System.out.println("query time: " + queryTime);
-
-        } catch (SQLException | SqlParseException e) {
+        } catch (/*SQLException | */SqlParseException e) {
             e.printStackTrace();
         }
         return planRawString;

@@ -31,7 +31,7 @@ public class Demo04 {
             // 获取执行计划可视化数据
             VisualPlanNode root = visualPlanTreeGenerator.getVisualPlanTree(conn, sql);
             System.out.println("levelOrder: ");
-            PrintHandler printHandler = new PrintHandler();
+            PrintHandler printHandler = new PrintHandler(0);
             printHandler.draw(root, 0);
         } catch (SQLException e) {
             e.printStackTrace();

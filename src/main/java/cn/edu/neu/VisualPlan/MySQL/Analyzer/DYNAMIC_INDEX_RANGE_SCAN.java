@@ -21,7 +21,7 @@ public class DYNAMIC_INDEX_RANGE_SCAN implements AccessPath {
         if (!matcher.find()) {
             return false;
         }
-        fieldMap.put("type", "DYNAMIC_INDEX_RANGE_SCAN");
+        fieldMap.put("type", "DYNAMIC_INDEX\n_RANGE_SCAN");
         fieldMap.put("1", matcher.group(1));
         return true;
     }
