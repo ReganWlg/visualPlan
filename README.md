@@ -200,6 +200,10 @@ java 的通用 dbms 接口协议。
 1. SQL查询出错时弹出对话框。
    ![pop a dialog when an SQL query fails](./Images/pop_a_dialog_when_an_SQL_query_fails.png)
 
+## 6月16日更新
+
+1. 添加TPC-H测试.txt文件，里边记录了所有TPC-H的22个查询语句。最后一次提交了，毕设完成了。
+
 # 8. 以后的任务
 
 ## 1月16日新增

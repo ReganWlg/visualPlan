@@ -18,7 +18,7 @@ public class PrintHandler {
 
     private AnchorPane _root = new AnchorPane();
 
-    private int index;
+    private final int index;
 
     private int currentLevel = 0;
 
